@@ -3,18 +3,25 @@ import "./globals.css";
 import { personal } from "@/data/personal";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vubaokhanh.dev"),
+  metadataBase: new URL("https://vubaokhanh.tech"),
   title: {
     default: `${personal.name} — Fullstack Developer`,
     template: `%s | ${personal.name}`,
   },
   description:
-    "Fullstack Developer specializing in Laravel, React, TypeScript and Node.js. Building scalable digital experiences and enterprise systems.",
+    "Vu Bao Khanh — Fullstack Developer specializing in custom web development, backend engineering (Laravel, NestJS), and frontend building (React, Next.js) for scalable products.",
   keywords: [
     "Vu Bao Khanh",
+    "Vũ Bảo Khanh",
+    "Vũ Bảo Khanh PC08901",
+    "Vu Bao Khanh Developer",
+    "vubaokhanh.tech",
+    "vubaokhanh",
+    "custom web development",
     "Fullstack Developer",
     "Laravel Developer",
     "React Developer",
+    "NestJS",
     "TypeScript",
     "Node.js",
     "Vietnam Developer",
@@ -25,10 +32,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://vubaokhanh.dev",
+    url: "https://vubaokhanh.tech",
     title: `${personal.name} — Fullstack Developer`,
     description:
-      "Building scalable digital experiences and enterprise systems with Laravel, React & TypeScript.",
+      "Portfolio and custom web development services of Vu Bao Khanh — Fullstack Developer Laravel, React & NestJS.",
     siteName: `${personal.name} Portfolio`,
     images: [
       {
@@ -43,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${personal.name} — Fullstack Developer`,
     description:
-      "Building scalable digital experiences and enterprise systems.",
+      "Portfolio and custom web development services of Vu Bao Khanh.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -80,9 +87,9 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: personal.name,
-              url: "https://vubaokhanh.dev",
+              url: "https://vubaokhanh.tech",
               jobTitle: personal.role,
-              description: personal.bio,
+              description: "Vu Bao Khanh — Fullstack Developer portfolio specializing in custom web development, backend engineering (Laravel, NestJS) and frontend frameworks.",
               sameAs: [personal.github, personal.linkedin, personal.facebook],
             }),
           }}

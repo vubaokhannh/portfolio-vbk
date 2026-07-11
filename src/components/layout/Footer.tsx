@@ -6,9 +6,10 @@ import { Github, Linkedin, Mail, Facebook, ArrowUp } from "lucide-react";
 
 const FOOTER_LINKS = [
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
+  { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
-  { label: "Timeline", href: "#timeline" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
   { label: "GitHub", href: "#github" },
   { label: "Contact", href: "#contact" },
 ];
@@ -64,7 +65,7 @@ export default function Footer() {
                 <span className="text-xs font-black text-black">K</span>
               </div>
               <span className="font-mono font-bold text-sm text-white/80">
-                VUBAOKHANH<span className="text-[#00D9FF]">.TEACH</span>
+                VUBAOKHANH<span className="text-[#00D9FF]">.TECH</span>
               </span>
             </div>
             <p className="text-xs text-white/30 max-w-xs font-mono">

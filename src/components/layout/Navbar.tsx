@@ -8,9 +8,10 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
+  { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
-  { label: "Timeline", href: "#timeline" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -79,7 +80,7 @@ export default function Navbar() {
               <span className="text-xs font-black text-black">K</span>
             </div>
             <span className="font-mono font-bold text-sm text-white/80">
-              VUBAOKHANH<span className="text-[#00D9FF]">.TEACH</span>
+              VUBAOKHANH<span className="text-[#00D9FF]">.TECH</span>
             </span>
           </a>
 

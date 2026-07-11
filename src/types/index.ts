@@ -44,25 +44,16 @@ export interface SkillGroup {
   skills: Skill[];
 }
 
-export interface TimelineItem {
+export interface ExperienceItem {
   id: string;
-  year: string;
-  title: string;
+  company: string;
+  role: string;
+  duration: string;
   description: string;
   tags: string[];
-  type: "work" | "learning" | "milestone";
   color: string;
 }
 
-export interface FocusItem {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  progress: number; // 0-100
-  color: string;
-  tags: string[];
-}
 
 export interface NavItem {
   label: string;
@@ -114,4 +105,13 @@ export interface GithubStats {
   totalRepos: number;
   totalStars: number;
   topLanguages: { name: string; percentage: number; color: string }[];
+}
+
+export interface ServiceItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  color: string;
+  tags: string[];
 }

@@ -8,12 +8,12 @@ export const personal: PersonalInfo = {
   tagline: "Building scalable digital experiences and enterprise systems.",
   bio: "I'm a Fullstack Developer passionate about crafting scalable enterprise applications and seamless digital experiences. Currently working with Laravel, React, and TypeScript — exploring Node.js and modern system design.",
   location: "Vietnam",
-  email: "vubaokhanh@example.com",
-  github: "https://github.com/vubaokhanh",
-  linkedin: "https://linkedin.com/in/vubaokhanh",
-  facebook: "https://facebook.com/vubaokhanh",
+  email: "vubaokhanh2311@gmail.com",
+  github: "https://github.com/vubaokhannh",
+  linkedin: "https://linkedin.com/in/vubaokhannh",
+  facebook: "https://www.facebook.com/vubaokhanh08901",
   cvUrl: "/cv-vubaokhanh.pdf",
-  stack: ["Laravel", "React", "TypeScript", "Node.js"],
+  stack: ["Laravel", "React", "TypeScript", "Node.js", "NestJS", "PostgreSQL"],
   stats: [
     {
       id: "experience",

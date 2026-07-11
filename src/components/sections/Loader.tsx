@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BOOT_SEQUENCE = [
-  { text: "Loading Experience...", delay: 200 },
-  { text: "Loading Projects...", delay: 600 },
-  { text: "Loading Creativity...", delay: 1000 },
-  { text: "Loading Skills...", delay: 1400 },
+  { text: "Initializing Services...", delay: 250 },
+  { text: "Loading Projects...", delay: 650 },
+  { text: "Compiling Skills...", delay: 1050 },
+  { text: "Injecting Experiences...", delay: 1450 },
 ];
 
 interface LoaderProps {
@@ -94,7 +94,7 @@ export default function Loader({ onComplete }: LoaderProps) {
                   System v1.0.0
                 </span>
               </div>
-              <h1 className="font-mono text-4xl md:text-5xl font-bold text-white tracking-tight">
+              <h1 className="font-mono text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">
                 BOOTING{" "}
                 <span
                   style={{
@@ -104,7 +104,7 @@ export default function Loader({ onComplete }: LoaderProps) {
                     backgroundClip: "text",
                   }}
                 >
-                  KHANH.OS
+                  VUBAOKHANH.TECH
                 </span>
               </h1>
             </motion.div>
@@ -122,15 +122,14 @@ export default function Loader({ onComplete }: LoaderProps) {
                 <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
                 <div className="w-3 h-3 rounded-full bg-[#28C840]" />
                 <span className="ml-2 font-mono text-xs text-white/30">
-                  khanh@portfolio ~ init
+                  vubaokhanh@portfolio ~ init
                 </span>
               </div>
 
               {/* Terminal body */}
               <div className="p-4 font-mono text-sm space-y-1 min-h-[120px]">
                 <p className="text-white/40">
-                  <span className="text-[#00D9FF]">$</span> ./boot --system
-                  khanh.os
+                  <span className="text-[#00D9FF]">$</span> ./boot --system vubaokhanh.tech
                 </p>
                 {BOOT_SEQUENCE.slice(0, currentLine).map((item, i) => (
                   <motion.p

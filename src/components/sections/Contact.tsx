@@ -75,7 +75,7 @@ export default function Contact() {
 
           {/* Headline */}
           <SectionHeading
-            title="Let's Build Something Amazing Together"
+            title="Let's Bring Your Vision to Life"
             align="center"
           />
 

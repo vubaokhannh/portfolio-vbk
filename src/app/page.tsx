@@ -14,17 +14,17 @@ import Footer from "@/components/layout/Footer";
 const About = dynamic(() => import("@/components/sections/About"), {
   ssr: false,
 });
-const CurrentFocus = dynamic(
-  () => import("@/components/sections/CurrentFocus"),
-  { ssr: false },
-);
+
 const Skills = dynamic(() => import("@/components/sections/Skills"), {
+  ssr: false,
+});
+const Services = dynamic(() => import("@/components/sections/Services"), {
   ssr: false,
 });
 const Projects = dynamic(() => import("@/components/sections/Projects"), {
   ssr: false,
 });
-const Timeline = dynamic(() => import("@/components/sections/Timeline"), {
+const Experience = dynamic(() => import("@/components/sections/Experience"), {
   ssr: false,
 });
 
@@ -54,10 +54,11 @@ export default function Home() {
           <main id="main-content">
             <Hero />
             <About />
-            <CurrentFocus />
-            <Skills />
+
+            <Services />
             <Projects />
-            <Timeline />
+            <Skills />
+            <Experience />
 
             <TechUniverse />
             <Contact />
