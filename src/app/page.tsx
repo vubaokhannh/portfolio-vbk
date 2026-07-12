@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { useLenis } from "@/hooks/useLenis";
 
@@ -39,13 +39,15 @@ const Contact = dynamic(() => import("@/components/sections/Contact"), {
 export default function Home() {
   const [loaderDone, setLoaderDone] = useState(false);
 
+  const handleLoaderComplete = useCallback(() => setLoaderDone(true), []);
+
   // Initialize Lenis smooth scroll
   useLenis();
 
   return (
     <>
       {/* Loader experience */}
-      <Loader onComplete={() => setLoaderDone(true)} />
+      <Loader onComplete={handleLoaderComplete} />
 
       {/* Main site — revealed after loader */}
       {loaderDone && (
