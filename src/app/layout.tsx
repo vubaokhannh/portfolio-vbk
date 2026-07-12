@@ -1,6 +1,20 @@
 import type { Metadata } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { personal } from "@/data/personal";
+import { LanguageProvider } from "@/hooks/useLanguage";
+
+const sansFont = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const monoFont = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vubaokhanh.tech"),
@@ -84,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${sansFont.variable} ${monoFont.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -102,7 +116,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[#050505] text-white antialiased">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

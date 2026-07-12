@@ -3,13 +3,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
-import { personal } from "@/data/personal";
+import { personalEn, personalVi } from "@/data/personal";
+import { useLanguage } from "@/hooks/useLanguage";
 import {
   Calendar,
   Package,
   Cpu,
-  MapPin,
-  Mail,
   Download,
   Terminal,
   FileText,
@@ -26,37 +25,39 @@ interface TechCategory {
   items: TechItem[];
 }
 
-const techCategories: TechCategory[] = [
-  {
-    title: "Backend & Core",
-    items: [
-      { name: "Laravel", color: "#FF2D20" },
-      { name: "Node.js", color: "#339933" },
-      { name: "MySQL", color: "#00758F" },
-      { name: "Filament", color: "#F59E0B" },
-    ],
-  },
-  {
-    title: "Frontend & UI",
-    items: [
-      { name: "React", color: "#61DAFB" },
-      { name: "TypeScript", color: "#3178C6" },
-      { name: "Tailwind CSS", color: "#38BDF8" },
-    ],
-  },
-  {
-    title: "DevOps & Workflow",
-    items: [
-      { name: "Docker", color: "#2496ED" },
-    ],
-  },
-];
-
 type TabType = "profile" | "status" | "stack";
 
 export default function About() {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
+  const { language, t } = useLanguage();
+  const p = language === "en" ? personalEn : personalVi;
+
+  const techCategories: TechCategory[] = [
+    {
+      title: language === "en" ? "Backend & Core" : "Backend & Cốt lõi",
+      items: [
+        { name: "Laravel", color: "#FF2D20" },
+        { name: "Node.js", color: "#339933" },
+        { name: "MySQL", color: "#00758F" },
+        { name: "Filament", color: "#F59E0B" },
+      ],
+    },
+    {
+      title: language === "en" ? "Frontend & UI" : "Frontend & Giao diện",
+      items: [
+        { name: "React", color: "#61DAFB" },
+        { name: "TypeScript", color: "#3178C6" },
+        { name: "Tailwind CSS", color: "#38BDF8" },
+      ],
+    },
+    {
+      title: language === "en" ? "DevOps & Workflow" : "DevOps & Quy trình",
+      items: [
+        { name: "Docker", color: "#2496ED" },
+      ],
+    },
+  ];
 
   return (
     <section
@@ -66,9 +67,9 @@ export default function About() {
     >
       <div className="container-custom">
         <SectionHeading
-          eyebrow="About Me"
-          title="Crafting Digital Excellence"
-          description="Passionate about building systems that scale, code that breathes, and experiences that delight."
+          eyebrow={t("about.eyebrow")}
+          title={t("about.title")}
+          description={t("about.description")}
           className="mb-16"
         />
 
@@ -83,41 +84,41 @@ export default function About() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                   </span>
-                  Available for work
+                  {t("about.availableWork")}
                 </div>
                 
                 <span className="font-mono text-xs text-white/40 tracking-widest uppercase">
-                  Introduction
+                  {t("about.introduction")}
                 </span>
               </div>
 
               <div className="flex flex-col gap-3">
                 <h3 className="text-3xl md:text-4xl font-black tracking-tight text-white">
-                  Hi, I&apos;m <span className="text-gradient-cyan">{personal.name}</span>
+                  Hi, I&apos;m <span className="text-gradient-cyan">{p.name}</span>
                 </h3>
                 <p className="text-base font-mono text-cyan-400/80 font-semibold uppercase tracking-wider">
-                  {personal.role}
+                  {p.role}
                 </p>
                 <p className="text-white/70 leading-relaxed text-sm md:text-base mt-2 font-medium">
-                  {personal.bio}
+                  {p.bio}
                 </p>
               </div>
 
-              {personal.cvUrl && (
+              {p.cvUrl && (
                 <a
-                  href={personal.cvUrl}
+                  href={p.cvUrl}
                   download
                   className="inline-flex items-center gap-2 text-xs font-mono font-bold px-4 py-2.5 rounded-xl border border-white/[0.08] hover:border-cyan-500/30 bg-white/[0.02] hover:bg-cyan-500/5 text-white/70 hover:text-white transition-all duration-300 w-fit mt-2"
                 >
                   <Download className="w-4 h-4" />
-                  Download Resume
+                  {t("about.downloadResume")}
                 </a>
               )}
             </div>
 
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-3 gap-4 mt-auto">
-              {personal.stats.map((stat, i) => {
+              {p.stats.map((stat, i) => {
                 const colors = ["#00D9FF", "#7C3AED", "#4F46E5"];
                 const icons = [
                   <Calendar className="w-4 h-4" key="cal" />,
@@ -233,32 +234,65 @@ export default function About() {
                     >
                       <pre className="font-mono text-xs leading-relaxed text-white/80 overflow-x-auto select-text">
                         <code>
-                          {"{\n"}
-                          {"  "}
-                          <span className="text-[#9CDCFE]">&quot;name&quot;</span>: <span className="text-[#CE9178]">&quot;Vu Bao Khanh&quot;</span>,{"\n"}
-                          {"  "}
-                          <span className="text-[#9CDCFE]">&quot;role&quot;</span>: <span className="text-[#CE9178]">&quot;Fullstack Developer&quot;</span>,{"\n"}
-                          {"  "}
-                          <span className="text-[#9CDCFE]">&quot;location&quot;</span>: <span className="text-[#CE9178]">&quot;Vietnam&quot;</span>,{"\n"}
-                          {"  "}
-                          <span className="text-[#9CDCFE]">&quot;specialties&quot;</span>: [{"\n"}
-                          {"    "}
-                          <span className="text-[#CE9178]">&quot;Backend Architecture&quot;</span>,{"\n"}
-                          {"    "}
-                          <span className="text-[#CE9178]">&quot;API Development&quot;</span>,{"\n"}
-                          {"    "}
-                          <span className="text-[#CE9178]">&quot;Frontend UIs&quot;</span>{"\n"}
-                          {"  "}],{"\n"}
-                          {"  "}
-                          <span className="text-[#9CDCFE]">&quot;traits&quot;</span>: [{"\n"}
-                          {"    "}
-                          <span className="text-[#CE9178]">&quot;Scalability-focused&quot;</span>,{"\n"}
-                          {"    "}
-                          <span className="text-[#CE9178]">&quot;Clean-code enthusiast&quot;</span>,{"\n"}
-                          {"    "}
-                          <span className="text-[#CE9178]">&quot;Continuous Learner&quot;</span>{"\n"}
-                          {"  "}]{"\n"}
-                          {"}"}
+                          {language === "en" ? (
+                            <>
+                              {"{\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;name&quot;</span>: <span className="text-[#CE9178]">&quot;Vu Bao Khanh&quot;</span>,{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;role&quot;</span>: <span className="text-[#CE9178]">&quot;Fullstack Developer&quot;</span>,{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;location&quot;</span>: <span className="text-[#CE9178]">&quot;Vietnam&quot;</span>,{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;specialties&quot;</span>: [{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Backend Architecture&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;API Development&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Frontend UIs&quot;</span>{"\n"}
+                              {"  "}],{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;traits&quot;</span>: [{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Scalability-focused&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Clean-code enthusiast&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Continuous Learner&quot;</span>{"\n"}
+                              {"  "}]{"\n"}
+                              {"}"}
+                            </>
+                          ) : (
+                            <>
+                              {"{\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;tên&quot;</span>: <span className="text-[#CE9178]">&quot;Vũ Bảo Khanh&quot;</span>,{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;vai_trò&quot;</span>: <span className="text-[#CE9178]">&quot;Nhà phát triển Fullstack&quot;</span>,{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;vị_trí&quot;</span>: <span className="text-[#CE9178]">&quot;Việt Nam&quot;</span>,{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;chuyên_môn&quot;</span>: [{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Kiến trúc Hệ thống máy chủ&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Thiết kế & Tối ưu APIs&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Giao diện Frontend Tương tác&quot;</span>{"\n"}
+                              {"  "}],{"\n"}
+                              {"  "}
+                              <span className="text-[#9CDCFE]">&quot;phẩm_chất&quot;</span>: [{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Tập trung vào hiệu suất cao&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Đam mê chuẩn viết code sạch&quot;</span>,{"\n"}
+                              {"    "}
+                              <span className="text-[#CE9178]">&quot;Luôn tự học hỏi công nghệ mới&quot;</span>{"\n"}
+                              {"  "}]{"\n"}
+                              {"}"}
+                            </>
+                          )}
                         </code>
                       </pre>
                     </motion.div>
@@ -276,7 +310,9 @@ export default function About() {
                       <div className="font-mono text-xs space-y-3.5 select-text">
                         <div className="flex items-center gap-2">
                           <span className="text-emerald-400 font-bold">[OK]</span>
-                          <span className="text-white/40">Initializing diagnostic monitor...</span>
+                          <span className="text-white/40">
+                            {language === "en" ? "Initializing diagnostic monitor..." : "Đang khởi tạo chẩn đoán hệ thống..."}
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-emerald-400 font-bold">[OK]</span>
@@ -285,14 +321,20 @@ export default function About() {
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-emerald-400 font-bold">[OK]</span>
-                          <span className="text-white/80 font-bold">Location:</span>
-                          <span className="text-white/60">Vietnam (UTC+7)</span>
+                          <span className="text-white/80 font-bold">
+                            {language === "en" ? "Location:" : "Khu vực:"}
+                          </span>
+                          <span className="text-white/60">
+                            {language === "en" ? "Vietnam (UTC+7)" : "Việt Nam (UTC+7)"}
+                          </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-emerald-400 font-bold">[OK]</span>
-                          <span className="text-white/80 font-bold">Status:</span>
+                          <span className="text-white/80 font-bold">
+                            {language === "en" ? "Status:" : "Trạng thái:"}
+                          </span>
                           <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 text-[10px] tracking-wide uppercase">
-                            Available for work
+                            {t("about.availableWork")}
                           </span>
                         </div>
                         
@@ -300,12 +342,16 @@ export default function About() {
                         <div className="space-y-1.5 pt-2 border-t border-white/[0.05]">
                           <div className="flex items-center gap-2">
                             <span className="text-violet-400 font-bold">[ACTIVE]</span>
-                            <span className="text-white/80 font-bold">Learning Focus:</span>
-                            <span className="text-violet-400 font-semibold">Node.js &amp; Architecture</span>
+                            <span className="text-white/80 font-bold">
+                              {language === "en" ? "Learning Focus:" : "Đang học hỏi:"}
+                            </span>
+                            <span className="text-violet-400 font-semibold">
+                              {language === "en" ? "Node.js & Architecture" : "Hệ sinh thái Node.js & Thiết kế Hệ thống"}
+                            </span>
                           </div>
                           <div className="space-y-1 pl-6">
                             <div className="flex items-center justify-between text-[10px] text-white/40">
-                              <span>PROGRESS</span>
+                              <span>{language === "en" ? "PROGRESS" : "TIẾN TRÌNH"}</span>
                               <span className="text-violet-400 font-bold">75%</span>
                             </div>
                             <div className="h-2 w-full bg-white/[0.03] border border-white/[0.05] rounded-full overflow-hidden">
@@ -322,12 +368,14 @@ export default function About() {
                         
                         <div className="flex items-center gap-2 pt-2 border-t border-white/[0.05]">
                           <span className="text-emerald-400 font-bold">[OK]</span>
-                          <span className="text-white/80 font-bold">Contact Email:</span>
+                          <span className="text-white/80 font-bold">
+                            {language === "en" ? "Contact Email:" : "Email liên hệ:"}
+                          </span>
                           <a
-                            href={`mailto:${personal.email}`}
+                            href={`mailto:${p.email}`}
                             className="text-cyan-400 hover:underline hover:text-cyan-300 transition-colors"
                           >
-                            {personal.email}
+                            {p.email}
                           </a>
                         </div>
                       </div>

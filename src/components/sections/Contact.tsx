@@ -3,45 +3,49 @@
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { personal } from "@/data/personal";
+import { personalEn, personalVi } from "@/data/personal";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Github, Linkedin, Mail, Facebook, ArrowUpRight } from "lucide-react";
 
-const SOCIAL_LINKS = [
-  {
-    id: "contact-github",
-    label: "GitHub",
-    href: personal.github,
-    icon: <Github className="w-5 h-5" />,
-    color: "#FFFFFF",
-    description: "See my code",
-  },
-  {
-    id: "contact-linkedin",
-    label: "LinkedIn",
-    href: personal.linkedin,
-    icon: <Linkedin className="w-5 h-5" />,
-    color: "#0A66C2",
-    description: "Let's connect",
-  },
-  {
-    id: "contact-email",
-    label: "Email",
-    href: `mailto:${personal.email}`,
-    icon: <Mail className="w-5 h-5" />,
-    color: "#00D9FF",
-    description: "Send a message",
-  },
-  {
-    id: "contact-facebook",
-    label: "Facebook",
-    href: personal.facebook,
-    icon: <Facebook className="w-5 h-5" />,
-    color: "#1877F2",
-    description: "Say hello",
-  },
-];
-
 export default function Contact() {
+  const { language, t } = useLanguage();
+  const p = language === "en" ? personalEn : personalVi;
+
+  const socialLinks = [
+    {
+      id: "contact-github",
+      label: "GitHub",
+      href: p.github,
+      icon: <Github className="w-5 h-5" />,
+      color: "#FFFFFF",
+      description: language === "en" ? "See my code" : "Xem mã nguồn",
+    },
+    {
+      id: "contact-linkedin",
+      label: "LinkedIn",
+      href: p.linkedin,
+      icon: <Linkedin className="w-5 h-5" />,
+      color: "#0A66C2",
+      description: language === "en" ? "Let's connect" : "Kết nối mạng lưới",
+    },
+    {
+      id: "contact-email",
+      label: "Email",
+      href: `mailto:${p.email}`,
+      icon: <Mail className="w-5 h-5" />,
+      color: "#00D9FF",
+      description: language === "en" ? "Send a message" : "Gửi hòm thư",
+    },
+    {
+      id: "contact-facebook",
+      label: "Facebook",
+      href: p.facebook,
+      icon: <Facebook className="w-5 h-5" />,
+      color: "#1877F2",
+      description: language === "en" ? "Say hello" : "Ghé thăm trang",
+    },
+  ];
+
   return (
     <section
       id="contact"
@@ -69,13 +73,13 @@ export default function Contact() {
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#28C840] animate-pulse" />
             <span className="text-xs font-mono text-white/50 tracking-widest uppercase">
-              Available for work
+              {t("contact.eyebrow")}
             </span>
           </motion.div>
 
           {/* Headline */}
           <SectionHeading
-            title="Let's Bring Your Vision to Life"
+            title={t("contact.title")}
             align="center"
           />
 
@@ -86,8 +90,7 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="text-white/50 text-lg max-w-xl leading-relaxed"
           >
-            Available for full-time opportunities, freelance projects and
-            collaborations. Let&apos;s create something extraordinary.
+            {t("contact.description")}
           </motion.p>
 
           {/* Social links */}
@@ -98,7 +101,7 @@ export default function Contact() {
             transition={{ delay: 0.3 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full"
           >
-            {SOCIAL_LINKS.map((social, i) => (
+            {socialLinks.map((social, i) => (
               <motion.a
                 key={social.id}
                 id={social.id}
@@ -154,13 +157,13 @@ export default function Contact() {
             transition={{ delay: 0.5 }}
           >
             <MagneticButton
-              href={`mailto:${personal.email}`}
+              href={`mailto:${p.email}`}
               variant="primary"
               size="lg"
               id="contact-email-primary"
             >
               <Mail className="w-4 h-4" />
-              Send me an email
+              {t("contact.primaryCta")}
             </MagneticButton>
           </motion.div>
         </div>

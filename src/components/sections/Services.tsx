@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
-import { services } from "@/data/services";
+import { servicesEn, servicesVi } from "@/data/services";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Globe, ShoppingBag, Layers, Zap, ArrowUpRight } from "lucide-react";
 
 function ServiceIcon({ icon, color }: { icon: string; color: string }) {
@@ -23,6 +24,9 @@ function ServiceIcon({ icon, color }: { icon: string; color: string }) {
 }
 
 export default function Services() {
+  const { language, t } = useLanguage();
+  const servicesList = language === "en" ? servicesEn : servicesVi;
+
   function handleContactClick(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
     const el = document.querySelector("#contact");
@@ -47,14 +51,14 @@ export default function Services() {
 
       <div className="container-custom">
         <SectionHeading
-          eyebrow="Services"
-          title="What I Offer"
-          description="High-performance, modern, and SEO-optimized web development services tailored to scale your business."
+          eyebrow={t("services.eyebrow")}
+          title={t("services.title")}
+          description={t("services.description")}
           className="mb-16"
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, i) => (
+          {servicesList.map((service, i) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 30 }}
@@ -131,7 +135,7 @@ export default function Services() {
                   className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wide transition-colors group-hover/service:underline"
                   style={{ color: service.color }}
                 >
-                  Get Started
+                  {t("services.getStarted")}
                   <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/service:translate-x-0.5 group-hover/service:-translate-y-0.5" />
                 </a>
               </div>

@@ -3,22 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
-import { experience } from "@/data/experience";
-import { GitCommit, Terminal } from "lucide-react";
+import { experienceEn, experienceVi } from "@/data/experience";
+import { useLanguage } from "@/hooks/useLanguage";
+import { GitCommit } from "lucide-react";
 
 export default function Experience() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const { language, t } = useLanguage();
+  const experienceList = language === "en" ? experienceEn : experienceVi;
 
   useEffect(() => {
-    let gsap: typeof import("gsap") | null = null;
     let ScrollTrigger: unknown = null;
 
     async function initGSAP() {
       const gsapModule = await import("gsap");
       const { ScrollTrigger: ST } = await import("gsap/ScrollTrigger");
-      gsap = gsapModule;
       gsapModule.default.registerPlugin(ST);
       ScrollTrigger = ST;
 
@@ -69,9 +70,9 @@ export default function Experience() {
 
       <div className="container-custom">
         <SectionHeading
-          eyebrow="Journey"
-          title="Work Experience"
-          description="A summary of my professional development and engineer positions."
+          eyebrow={t("experience.eyebrow")}
+          title={t("experience.title")}
+          description={t("experience.description")}
           align="center"
           className="mb-16"
         />
@@ -92,7 +93,7 @@ export default function Experience() {
           </div>
 
           <div className="flex flex-col gap-12 select-none">
-            {experience.map((item, i) => {
+            {experienceList.map((item, i) => {
               const isEven = i % 2 === 0;
 
               return (
@@ -187,23 +188,22 @@ export default function Experience() {
                           <span className="w-2 h-2 rounded-full bg-yellow-500/50" />
                           <span className="w-2 h-2 rounded-full bg-green-500/50" />
                         </div>
-
                       </div>
 
                       {/* Terminal Code Content */}
                       <div className="p-5 font-mono text-[11px] md:text-xs text-white/85 leading-relaxed text-left select-text">
                         {/* Date/Duration line */}
                         <div className="text-white/50 mb-3">
-                          Date:   <span className="text-white/80 font-bold">{item.duration}</span>
+                          {language === "en" ? "Date:   " : "Thời gian: "} <span className="text-white/80 font-bold">{item.duration}</span>
                         </div>
 
                         {/* Company & Role */}
                         <div className="pl-3.5 border-l-2 border-white/10 mb-4 space-y-1 select-text">
                           <div className="text-white/50 text-xs font-mono">
-                            Company:  <span className="text-white font-bold font-sans text-sm tracking-wide">{item.company}</span>
+                            {language === "en" ? "Company:  " : "Công ty:   "} <span className="text-white font-bold font-sans text-sm tracking-wide">{item.company}</span>
                           </div>
                           <div className="text-white/50 text-xs font-mono">
-                            Position: <span className="font-bold text-xs" style={{ color: item.color }}>{item.role}</span>
+                            {language === "en" ? "Position: " : "Vị trí:    "} <span className="font-bold text-xs" style={{ color: item.color }}>{item.role}</span>
                           </div>
                         </div>
 

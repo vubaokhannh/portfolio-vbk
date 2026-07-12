@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useScrollProgress(): number {
   const [progress, setProgress] = useState(0);
@@ -25,11 +25,12 @@ export function useInView(threshold = 0.1): {
   ref: React.RefObject<HTMLElement | null>;
   inView: boolean;
 } {
-  const ref = { current: null as HTMLElement | null };
+  const ref = useRef<HTMLElement | null>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
+    const currentRef = ref.current;
+    if (!currentRef) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -41,9 +42,9 @@ export function useInView(threshold = 0.1): {
       { threshold }
     );
 
-    observer.observe(ref.current);
+    observer.observe(currentRef);
     return () => observer.disconnect();
   }, [threshold]);
 
-  return { ref: ref as React.RefObject<HTMLElement | null>, inView };
+  return { ref, inView };
 }

@@ -1,43 +1,46 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { personal } from "@/data/personal";
+import { personalEn, personalVi } from "@/data/personal";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Github, Linkedin, Mail, Facebook, ArrowUp } from "lucide-react";
 
-const FOOTER_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "GitHub", href: "#github" },
-  { label: "Contact", href: "#contact" },
-];
-
-const SOCIAL_LINKS = [
-  {
-    icon: <Github className="w-4 h-4" />,
-    href: personal.github,
-    label: "GitHub",
-  },
-  {
-    icon: <Linkedin className="w-4 h-4" />,
-    href: personal.linkedin,
-    label: "LinkedIn",
-  },
-  {
-    icon: <Mail className="w-4 h-4" />,
-    href: `mailto:${personal.email}`,
-    label: "Email",
-  },
-  {
-    icon: <Facebook className="w-4 h-4" />,
-    href: personal.facebook,
-    label: "Facebook",
-  },
-];
-
 export default function Footer() {
+  const { language, t } = useLanguage();
+  const p = language === "en" ? personalEn : personalVi;
+
+  const footerLinks = [
+    { label: t("nav.about"), href: "#about" },
+    { label: t("nav.services"), href: "#services" },
+    { label: t("nav.projects"), href: "#projects" },
+    { label: t("nav.skills"), href: "#skills" },
+    { label: t("nav.experience"), href: "#experience" },
+    { label: t("nav.contact"), href: "#contact" },
+  ];
+
+  const socialLinks = [
+    {
+      icon: <Github className="w-4 h-4" />,
+      href: p.github,
+      label: "GitHub",
+    },
+    {
+      icon: <Linkedin className="w-4 h-4" />,
+      href: p.linkedin,
+      label: "LinkedIn",
+    },
+    {
+      icon: <Mail className="w-4 h-4" />,
+      href: `mailto:${p.email}`,
+      label: "Email",
+    },
+    {
+      icon: <Facebook className="w-4 h-4" />,
+      href: p.facebook,
+      label: "Facebook",
+    },
+  ];
+
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -69,15 +72,15 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-xs text-white/30 max-w-xs font-mono">
-              {personal.role} · {personal.location}
+              {p.role} · {p.location}
             </p>
-            <p className="text-xs text-white/20">{personal.tagline}</p>
+            <p className="text-xs text-white/20">{p.tagline}</p>
           </div>
 
           {/* Nav links */}
           <nav aria-label="Footer navigation">
             <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {FOOTER_LINKS.map((link) => (
+              {footerLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
@@ -91,7 +94,7 @@ export default function Footer() {
 
           {/* Social + Back to top */}
           <div className="flex items-center gap-3">
-            {SOCIAL_LINKS.map((social) => (
+            {socialLinks.map((social) => (
               <a
                 key={social.label}
                 href={social.href}
@@ -121,10 +124,10 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-2 mt-8 pt-6 border-t border-white/[0.04]">
           <p className="text-xs text-white/20 font-mono">
-            © {new Date().getFullYear()} {personal.name}. All rights reserved.
+            © {new Date().getFullYear()} {p.name}. {t("footer.copyright")}
           </p>
           <p className="text-xs text-white/15 font-mono">
-            Built with Next.js · TypeScript · Framer Motion
+            {t("footer.subtitle")}
           </p>
         </div>
       </div>

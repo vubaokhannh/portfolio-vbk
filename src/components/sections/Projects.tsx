@@ -3,14 +3,16 @@
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
-import { projects } from "@/data/projects";
+import { projectsEn, projectsVi } from "@/data/projects";
+import { useLanguage } from "@/hooks/useLanguage";
 import type { Project } from "@/types";
-import { ArrowUpRight, Github, ExternalLink, Zap } from "lucide-react";
+import { ArrowUpRight, Github, Zap } from "lucide-react";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const { t } = useLanguage();
 
   const rotateX = useSpring(useTransform(mouseY, [-150, 150], [6, -6]), {
     stiffness: 200,
@@ -112,7 +114,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
             {/* Year badge */}
             <div className="absolute top-12 right-4 px-2 py-0.5 rounded-md border border-white/[0.08] bg-black/40 backdrop-blur-md z-10">
-              <span className="font-mono text-[10px] font-medium text-white/40">
+              <span className="font-mono text-[10px] font-medium text-white/45">
                 {project.year}
               </span>
             </div>
@@ -178,7 +180,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold border border-white/[0.08] bg-white/[0.02] text-white/60 hover:text-white hover:bg-white/[0.05] hover:border-white/[0.15] transition-all duration-200 shadow-sm"
               >
                 <Github className="w-3.5 h-3.5" />
-                Source Code
+                {t("projects.sourceCode")}
               </motion.a>
             )}
 
@@ -197,7 +199,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   color: project.color,
                 }}
               >
-                Live Demo
+                {t("projects.liveDemo")}
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </motion.a>
             )}
@@ -209,6 +211,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 export default function Projects() {
+  const { language, t } = useLanguage();
+  const projectsList = language === "en" ? projectsEn : projectsVi;
+
   return (
     <section
       id="projects"
@@ -227,15 +232,15 @@ export default function Projects() {
 
       <div className="container-custom relative z-10">
         <SectionHeading
-          eyebrow="Featured Projects"
-          title="What I've Built"
-          description="Production applications serving real users — from real-time task collaborative boards to intelligent ticketing logistics systems."
+          eyebrow={t("projects.eyebrow")}
+          title={t("projects.title")}
+          description={t("projects.description")}
           className="mb-16"
         />
 
         {/* Responsive Grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-stretch">
-          {projects.map((project, i) => (
+          {projectsList.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}
         </div>

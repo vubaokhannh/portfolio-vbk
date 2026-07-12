@@ -1,6 +1,6 @@
 import type { PersonalInfo } from "@/types";
 
-export const personal: PersonalInfo = {
+export const personalEn: PersonalInfo = {
   name: "Vu Bao Khanh",
   firstName: "Vu Bao",
   lastName: "Khanh",
@@ -38,3 +38,34 @@ export const personal: PersonalInfo = {
     },
   ],
 };
+
+export const personalVi: PersonalInfo = {
+  ...personalEn,
+  tagline: "Xây dựng trải nghiệm kỹ thuật số quy mô lớn và hệ thống doanh nghiệp.",
+  bio: "Tôi là một nhà phát triển Fullstack đam mê kiến tạo các ứng dụng doanh nghiệp có khả năng mở rộng cao và trải nghiệm mượt mà. Hiện đang làm việc chủ yếu với Laravel, React, và TypeScript — đồng thời nghiên cứu chuyên sâu về Node.js và thiết kế hệ thống hiện đại.",
+  stats: [
+    {
+      id: "experience",
+      value: "1",
+      suffix: "+",
+      label: "Năm kinh nghiệm",
+      icon: "calendar",
+    },
+    {
+      id: "projects",
+      value: "10",
+      suffix: "+",
+      label: "Dự án hoàn thành",
+      icon: "package",
+    },
+    {
+      id: "technologies",
+      value: "15",
+      suffix: "+",
+      label: "Công nghệ nắm vững",
+      icon: "cpu",
+    },
+  ],
+};
+
+export const personal = personalEn;

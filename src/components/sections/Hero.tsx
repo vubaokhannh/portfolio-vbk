@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { personal } from "@/data/personal";
+import { personalEn, personalVi } from "@/data/personal";
+import { useLanguage } from "@/hooks/useLanguage";
 import { floatAnimation } from "@/animations/variants";
 import { ArrowRight, Download, Github, Sparkles } from "lucide-react";
 
@@ -21,6 +22,9 @@ const TECH_CARDS = [
 ];
 
 export default function Hero() {
+  const { language, t } = useLanguage();
+  const p = language === "en" ? personalEn : personalVi;
+
   return (
     <section
       id="hero"
@@ -83,7 +87,7 @@ export default function Hero() {
         >
           <Sparkles className="w-3.5 h-3.5 text-[#00D9FF] animate-pulse" />
           <span className="text-xs font-mono text-white/50 tracking-widest uppercase font-semibold">
-            Available for opportunities
+            {t("hero.available")}
           </span>
           <span className="w-1.5 h-1.5 rounded-full bg-[#28C840] animate-pulse shadow-[0_0_8px_#28C840]" />
         </motion.div>
@@ -123,18 +127,18 @@ export default function Hero() {
           <div className="flex items-center gap-3">
             <div className="h-px w-10 bg-gradient-to-r from-transparent to-white/10" />
             <span className="font-mono text-xs sm:text-sm text-white/40 tracking-[0.35em] uppercase font-bold">
-              Fullstack Developer
+              {p.role}
             </span>
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-white/10" />
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 max-w-xl">
-            {personal.stack.map((tech, i) => (
+            {p.stack.map((tech, i) => (
               <span key={tech} className="flex items-center">
                 <span className="text-white/60 hover:text-white transition-colors duration-150 font-mono text-xs sm:text-sm font-medium">
                   {tech}
                 </span>
-                {i < personal.stack.length - 1 && (
+                {i < p.stack.length - 1 && (
                   <span className="text-white/15 mx-2.5 text-xs select-none">
                     •
                   </span>
@@ -151,7 +155,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="text-sm sm:text-base md:text-lg text-white/45 max-w-xl leading-relaxed font-sans"
         >
-          {personal.tagline}
+          {p.tagline}
         </motion.p>
 
         {/* Cụm Action Buttons (CTAs) */}
@@ -168,22 +172,22 @@ export default function Hero() {
             id="hero-view-projects"
           >
             <ArrowRight className="w-4 h-4" />
-            View Projects
+            {t("hero.viewProjects")}
           </MagneticButton>
 
           <MagneticButton
-            href={personal.cvUrl}
+            href={p.cvUrl}
             variant="secondary"
             size="lg"
             download
             id="hero-download-cv"
           >
             <Download className="w-4 h-4" />
-            Download CV
+            {t("hero.downloadCv")}
           </MagneticButton>
 
           <MagneticButton
-            href={personal.github}
+            href={p.github}
             variant="ghost"
             size="lg"
             target="_blank"
@@ -191,7 +195,7 @@ export default function Hero() {
             id="hero-github"
           >
             <Github className="w-4 h-4" />
-            GitHub
+            {t("hero.github")}
           </MagneticButton>
         </motion.div>
 
@@ -203,7 +207,7 @@ export default function Hero() {
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none"
         >
           <span className="font-mono text-[9px] font-bold text-white/20 tracking-[0.2em] uppercase">
-            Scroll
+            {t("hero.scroll")}
           </span>
           <motion.div
             className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent"

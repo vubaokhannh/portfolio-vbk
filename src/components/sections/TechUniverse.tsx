@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { orbitTechs } from "@/data/orbit";
 import type { OrbitTech } from "@/types";
+import { useLanguage } from "@/hooks/useLanguage";
 
 // Import các Icon chất lượng cao đại diện cho bộ kỹ năng trong CV của bạn
 import {
@@ -255,6 +256,7 @@ function OrbitRing({
 }
 
 export default function TechUniverse() {
+  const { t } = useLanguage();
   const orbit1 = orbitTechs.filter((t) => t.orbit === 1);
   const orbit2 = orbitTechs.filter((t) => t.orbit === 2);
   const orbit3 = orbitTechs.filter((t) => t.orbit === 3);
@@ -300,9 +302,9 @@ export default function TechUniverse() {
 
       <div className="container-custom">
         <SectionHeading
-          eyebrow="Tech Universe"
-          title="My Solar System"
-          description="Technologies orbiting around my core expertise — the closer to the center, the stronger the mastery."
+          eyebrow={t("universe.eyebrow")}
+          title={t("universe.title")}
+          description={t("universe.description")}
           className="mb-16"
         />
 

@@ -5,20 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const NAV_ITEMS = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
-];
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const progress = useScrollProgress();
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -31,6 +24,15 @@ export default function Navbar() {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   }
+
+  const navItems = [
+    { label: t("nav.about"), href: "#about" },
+    { label: t("nav.services"), href: "#services" },
+    { label: t("nav.projects"), href: "#projects" },
+    { label: t("nav.skills"), href: "#skills" },
+    { label: t("nav.experience"), href: "#experience" },
+    { label: t("nav.contact"), href: "#contact" },
+  ];
 
   return (
     <>
@@ -86,7 +88,7 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -101,8 +103,34 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* CTA & Language Switcher */}
+          <div className="hidden md:flex items-center gap-4">
+            {/* Language Switcher */}
+            <div className="flex items-center gap-0.5 border border-white/[0.06] bg-white/[0.02] p-1 rounded-full text-[9px] font-mono select-none">
+              <button
+                onClick={() => setLanguage("en")}
+                className={cn(
+                  "px-2 py-0.5 rounded-full transition-all cursor-pointer",
+                  language === "en"
+                    ? "bg-[#00D9FF] text-black font-extrabold shadow-[0_0_8px_rgba(0,217,255,0.3)]"
+                    : "text-white/40 hover:text-white/80"
+                )}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLanguage("vi")}
+                className={cn(
+                  "px-2 py-0.5 rounded-full transition-all cursor-pointer",
+                  language === "vi"
+                    ? "bg-[#7C3AED] text-white font-extrabold shadow-[0_0_8px_rgba(124,58,237,0.3)]"
+                    : "text-white/40 hover:text-white/80"
+                )}
+              >
+                VI
+              </button>
+            </div>
+
             <a
               href="#contact"
               onClick={(e) => {
@@ -111,7 +139,7 @@ export default function Navbar() {
               }}
               className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#00D9FF]/10 border border-[#00D9FF]/20 text-[#00D9FF] hover:bg-[#00D9FF]/20 transition-all duration-200"
             >
-              Hire Me
+              {t("nav.hireMe")}
             </a>
           </div>
 
@@ -140,7 +168,7 @@ export default function Navbar() {
               transition={{ duration: 0.2 }}
               className="mt-2 rounded-2xl border border-white/[0.08] bg-[#0F1117]/95 backdrop-blur-xl p-3 flex flex-col gap-1"
             >
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
@@ -153,7 +181,36 @@ export default function Navbar() {
                   {item.label}
                 </a>
               ))}
-              <div className="border-t border-white/[0.05] mt-2 pt-2">
+              <div className="border-t border-white/[0.05] mt-2 pt-3 flex flex-col gap-3">
+                {/* Language Switcher Mobile */}
+                <div className="flex items-center justify-between px-2">
+                  <span className="text-xs font-mono text-white/40">Language / Ngôn ngữ</span>
+                  <div className="flex items-center gap-0.5 border border-white/[0.06] bg-white/[0.02] p-1 rounded-full text-[9px] font-mono select-none">
+                    <button
+                      onClick={() => setLanguage("en")}
+                      className={cn(
+                        "px-2.5 py-0.5 rounded-full transition-all cursor-pointer",
+                        language === "en"
+                          ? "bg-[#00D9FF] text-black font-extrabold"
+                          : "text-white/40 hover:text-white/80"
+                      )}
+                    >
+                      EN
+                    </button>
+                    <button
+                      onClick={() => setLanguage("vi")}
+                      className={cn(
+                        "px-2.5 py-0.5 rounded-full transition-all cursor-pointer",
+                        language === "vi"
+                          ? "bg-[#7C3AED] text-white font-extrabold"
+                          : "text-white/40 hover:text-white/80"
+                      )}
+                    >
+                      VI
+                    </button>
+                  </div>
+                </div>
+
                 <a
                   href="#contact"
                   onClick={(e) => {
@@ -162,7 +219,7 @@ export default function Navbar() {
                   }}
                   className="block w-full text-center px-4 py-2.5 rounded-xl text-sm font-medium bg-[#00D9FF]/10 border border-[#00D9FF]/20 text-[#00D9FF]"
                 >
-                  Hire Me
+                  {t("nav.hireMe")}
                 </a>
               </div>
             </motion.div>
