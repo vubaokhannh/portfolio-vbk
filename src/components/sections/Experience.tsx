@@ -92,7 +92,7 @@ export default function Experience() {
             />
           </div>
 
-          <div className="flex flex-col gap-12 select-none">
+          <div className="flex flex-col gap-12">
             {experienceList.map((item, i) => {
               const isEven = i % 2 === 0;
 
@@ -218,7 +218,7 @@ export default function Experience() {
                         </div>
 
                         {/* Technology tags styled as git diff additions (+ green) */}
-                        <div className="flex flex-wrap gap-1.5 mt-2 select-none">
+                        <div className="flex flex-wrap gap-1.5 mt-2">
                           {item.tags.map((tag) => (
                             <span
                               key={tag}

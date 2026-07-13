@@ -10,31 +10,14 @@ import Hero from "@/components/sections/Hero";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-// ── Lazy-loaded sections (code splitting) ──────────────────
-const About = dynamic(() => import("@/components/sections/About"), {
-  ssr: false,
-});
-
-const Skills = dynamic(() => import("@/components/sections/Skills"), {
-  ssr: false,
-});
-const Services = dynamic(() => import("@/components/sections/Services"), {
-  ssr: false,
-});
-const Projects = dynamic(() => import("@/components/sections/Projects"), {
-  ssr: false,
-});
-const Experience = dynamic(() => import("@/components/sections/Experience"), {
-  ssr: false,
-});
-
-const TechUniverse = dynamic(
-  () => import("@/components/sections/TechUniverse"),
-  { ssr: false },
-);
-const Contact = dynamic(() => import("@/components/sections/Contact"), {
-  ssr: false,
-});
+// ── Lazy-loaded sections (code splitting — SSR enabled for SEO) ──────────────────
+const About = dynamic(() => import("@/components/sections/About"));
+const Skills = dynamic(() => import("@/components/sections/Skills"));
+const Services = dynamic(() => import("@/components/sections/Services"));
+const Projects = dynamic(() => import("@/components/sections/Projects"));
+const Experience = dynamic(() => import("@/components/sections/Experience"));
+const TechUniverse = dynamic(() => import("@/components/sections/TechUniverse"));
+const Contact = dynamic(() => import("@/components/sections/Contact"));
 
 export default function Home() {
   const [loaderDone, setLoaderDone] = useState(false);
@@ -46,28 +29,35 @@ export default function Home() {
 
   return (
     <>
-      {/* Loader experience */}
+      {/* Loader overlay — fixed on top, does NOT block DOM content */}
       <Loader onComplete={handleLoaderComplete} />
 
-      {/* Main site — revealed after loader */}
-      {loaderDone && (
-        <>
-          <Navbar />
-          <main id="main-content">
-            <Hero />
-            <About />
-
-            <Services />
-            <Projects />
-            <Skills />
-            <Experience />
-
-            <TechUniverse />
-            <Contact />
-          </main>
-          <Footer />
-        </>
-      )}
+      {/*
+       * SEO FIX: Main content is ALWAYS in the DOM so Googlebot can read it.
+       * We use CSS visibility/opacity to hide it until the loader finishes,
+       * instead of conditional rendering which completely removes it from HTML.
+       */}
+      <div
+        aria-hidden={!loaderDone}
+        style={{
+          opacity: loaderDone ? 1 : 0,
+          visibility: loaderDone ? "visible" : "hidden",
+          transition: "opacity 0.4s ease",
+        }}
+      >
+        <Navbar />
+        <main id="main-content">
+          <Hero />
+          <About />
+          <Services />
+          <Projects />
+          <Skills />
+          <Experience />
+          <TechUniverse />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

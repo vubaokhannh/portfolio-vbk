@@ -94,7 +94,11 @@ export default function Loader({ onComplete }: LoaderProps) {
                   System v1.0.0
                 </span>
               </div>
-              <h1 className="font-mono text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+              {/* aria-hidden: loader is decorative, real h1 is in Hero section */}
+              <p
+                aria-hidden="true"
+                className="font-mono text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight"
+              >
                 BOOTING{" "}
                 <span
                   style={{
@@ -106,7 +110,7 @@ export default function Loader({ onComplete }: LoaderProps) {
                 >
                   VUBAOKHANH.TECH
                 </span>
-              </h1>
+              </p>
             </motion.div>
 
             {/* Terminal window */}

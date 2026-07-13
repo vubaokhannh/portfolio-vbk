@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { orbitTechs } from "@/data/orbit";
@@ -40,15 +41,27 @@ const ORBIT_COLORS = {
   3: { stroke: "rgba(79, 70, 229, 0.08)", glow: "rgba(79, 70, 229, 0.04)" },
 };
 
-/* ── Decorative stars scattered in the background ── */
-const STARS = Array.from({ length: 40 }, (_, i) => ({
-  id: i,
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  size: Math.random() * 2 + 0.5,
-  delay: Math.random() * 4,
-  duration: Math.random() * 3 + 2,
-}));
+/* ── Star type ── */
+interface Star {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  delay: number;
+  duration: number;
+}
+
+/* ── Stars are generated client-side only to avoid SSR/hydration mismatch ── */
+function generateStars(): Star[] {
+  return Array.from({ length: 40 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 2 + 0.5,
+    delay: Math.random() * 4,
+    duration: Math.random() * 3 + 2,
+  }));
+}
 
 /* ── Bộ ánh xạ chuỗi nhận diện sang SVG Component thực tế ── */
 function TechIcon({ name }: { name: string }) {
@@ -261,6 +274,12 @@ export default function TechUniverse() {
   const orbit2 = orbitTechs.filter((t) => t.orbit === 2);
   const orbit3 = orbitTechs.filter((t) => t.orbit === 3);
 
+  // Client-only: generate stars after hydration to avoid SSR mismatch
+  const [stars, setStars] = useState<Star[]>([]);
+  useEffect(() => {
+    setStars(generateStars());
+  }, []);
+
   return (
     <section
       id="universe"
@@ -277,9 +296,9 @@ export default function TechUniverse() {
         }}
       />
 
-      {/* Starfield particles */}
+      {/* Starfield particles — rendered client-side only */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {STARS.map((star) => (
+        {stars.map((star) => (
           <motion.div
             key={star.id}
             className="absolute rounded-full bg-white"

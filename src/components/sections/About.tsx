@@ -25,7 +25,7 @@ interface TechCategory {
   items: TechItem[];
 }
 
-type TabType = "profile" | "status" | "stack";
+type TabType = "profile" | "status" | "stack" | "press";
 
 export default function About() {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
@@ -179,7 +179,7 @@ export default function About() {
                 </div>
                 
                 {/* Tab buttons */}
-                <div className="flex items-center gap-1">
+                <div className="flex flex-wrap items-center gap-1">
                   <button
                     onClick={() => setActiveTab("profile")}
                     className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono transition-all duration-200 ${
@@ -212,6 +212,17 @@ export default function About() {
                   >
                     <Code2 className="w-3.5 h-3.5" />
                     stack.sh
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("press")}
+                    className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono transition-all duration-200 ${
+                      activeTab === "press"
+                        ? "text-emerald-400 bg-white/[0.03] border border-white/[0.05]"
+                        : "text-white/40 hover:text-white/70 hover:bg-white/[0.01]"
+                    }`}
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    press.md
                   </button>
                 </div>
                 
@@ -391,7 +402,7 @@ export default function About() {
                       transition={{ duration: 0.2 }}
                       className="h-full"
                     >
-                      <div className="space-y-4 font-mono select-none">
+                      <div className="space-y-4 font-mono">
                         {techCategories.map((cat) => (
                           <div key={cat.title} className="space-y-2">
                             <h5 className="text-[10px] text-white/30 uppercase tracking-widest">
@@ -438,6 +449,39 @@ export default function About() {
                           </div>
                         ))}
                       </div>
+                    </motion.div>
+                  )}
+
+                  {activeTab === "press" && (
+                    <motion.div
+                      key="press"
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      transition={{ duration: 0.2 }}
+                      className="h-full"
+                    >
+                      <pre className="font-mono text-[11px] leading-relaxed text-white/80 overflow-x-auto select-text whitespace-pre-wrap">
+                        <code>
+                          {language === "en" ? (
+                            <>
+                              <span className="text-emerald-400"># Press & Media Coverage</span>{"\n\n"}
+                              Featured news articles and projects coverage by Cao đẳng FPT Polytechnic:{"\n\n"}
+                              • <a href="https://caodang.fpt.edu.vn/tin-tuc-poly/du-an-tot-nghiep-xay-dung-website-he-thong-dat-ve-xe-bus-tich-hop-he-thong-ban-do-dinh-vi.html" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 hover:underline">Graduation Project: Bus Ticket Booking & Map Tracking Website</a>{"\n\n"}
+                              • <a href="https://caodang.fpt.edu.vn/tin-tuc-poly/an-tuong-voi-du-an-xuong-phan-mem-website-quan-ly-sinh-vien-tich-hop-google-drive-api.html" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 hover:underline">Software Workshop: Student Management Website (Google Drive API)</a>{"\n\n"}
+                              • <a href="https://caodang.fpt.edu.vn/tin-tuc-poly/sinh-vien-fpt-polytechnic-can-tho-thiet-ke-va-xay-dung-he-thong-ban-hang-laptop-truc-tuyen.html" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 hover:underline">E-Commerce: Designing Online Laptop Store System</a>
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-emerald-400"># Báo chí & Truyền thông</span>{"\n\n"}
+                              Các bài viết nổi bật về dự án và hoạt động tại Cao đẳng FPT Polytechnic:{"\n\n"}
+                              • <a href="https://caodang.fpt.edu.vn/tin-tuc-poly/du-an-tot-nghiep-xay-dung-website-he-thong-dat-ve-xe-bus-tich-hop-he-thong-ban-do-dinh-vi.html" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 hover:underline">Dự án Tốt nghiệp: Xây dựng hệ thống đặt vé xe bus & bản đồ định vị</a>{"\n\n"}
+                              • <a href="https://caodang.fpt.edu.vn/tin-tuc-poly/an-tuong-voi-du-an-xuong-phan-mem-website-quan-ly-sinh-vien-tich-hop-google-drive-api.html" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 hover:underline">Xưởng phần mềm: Website quản lý sinh viên tích hợp Google Drive API</a>{"\n\n"}
+                              • <a href="https://caodang.fpt.edu.vn/tin-tuc-poly/sinh-vien-fpt-polytechnic-can-tho-thiet-ke-va-xay-dung-he-thong-ban-hang-laptop-truc-tuyen.html" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 hover:underline">Thương mại điện tử: Thiết kế & xây dựng hệ thống bán laptop trực tuyến</a>
+                            </>
+                          )}
+                        </code>
+                      </pre>
                     </motion.div>
                   )}
                 </AnimatePresence>
