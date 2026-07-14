@@ -7,6 +7,7 @@ export const translations = {
       skills: "Skills",
       experience: "Experience",
       contact: "Contact",
+      blog: "Blog",
       hireMe: "Hire Me",
     },
     hero: {
@@ -71,6 +72,7 @@ export const translations = {
       skills: "Kỹ năng",
       experience: "Kinh nghiệm",
       contact: "Liên hệ",
+      blog: "Blog",
       hireMe: "Tuyển dụng",
     },
     hero: {

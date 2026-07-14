@@ -13,6 +13,8 @@ export default function Navbar() {
   const progress = useScrollProgress();
   const { language, setLanguage, t } = useLanguage();
 
+  const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -21,6 +23,13 @@ export default function Navbar() {
 
   function handleNavClick(href: string) {
     setMobileOpen(false);
+
+    // If on blog page and clicked a hash link, go to home page first
+    if (pathname.startsWith("/blog") && href.startsWith("#")) {
+      window.location.href = `/${href}`;
+      return;
+    }
+
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   }
@@ -32,6 +41,7 @@ export default function Navbar() {
     { label: t("nav.skills"), href: "#skills" },
     { label: t("nav.experience"), href: "#experience" },
     { label: t("nav.contact"), href: "#contact" },
+    { label: t("nav.blog"), href: "/blog" },
   ];
 
   return (
@@ -93,8 +103,10 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
+                  if (item.href.startsWith("#")) {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  }
                 }}
                 className="px-3 py-1.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/[0.05] transition-all duration-200 font-medium"
               >
@@ -173,8 +185,10 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(item.href);
+                    if (item.href.startsWith("#")) {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }
                   }}
                   className="px-4 py-2.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/[0.05] transition-all duration-200 font-medium"
                 >

@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://vubaokhanh.tech"),
   title: {
-    default: `${personal.name} (Vũ Bảo Khanh) — Fullstack Developer & Web Engineer`,
+    default: `${personal.name} — Fullstack Developer`,
     template: `%s | ${personal.name}`,
   },
   description:
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     alternateLocale: ["vi_VN"],
     url: "https://vubaokhanh.tech",
-    title: `${personal.name} (Vũ Bảo Khanh) — Fullstack Developer & Web Engineer`,
+    title: `${personal.name} — Fullstack Developer `,
     description:
       "Portfolio và dịch vụ thiết kế phát triển website của Vũ Bảo Khanh (Vu Bao Khanh) — Lập trình viên Fullstack Laravel, React & NestJS.",
     siteName: `${personal.name} Portfolio`,
@@ -83,14 +83,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: `${personal.name} — Fullstack Developer & Web Engineer`,
+        alt: `${personal.name} — Fullstack Developer `,
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${personal.name} (Vũ Bảo Khanh) — Fullstack Developer & Web Engineer`,
+    title: `${personal.name} — Fullstack Developer `,
     description:
       "Portfolio và dịch vụ thiết kế phát triển website của Vũ Bảo Khanh.",
     images: [{ url: "/og-image.png", alt: `${personal.name} — Fullstack Developer` }],
