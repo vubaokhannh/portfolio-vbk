@@ -19,14 +19,6 @@ interface SiteSettings {
 
 export default function ThemeInjector() {
   useEffect(() => {
-    // 0. Hydrate Light/Dark mode preference
-    if (typeof window !== "undefined") {
-      const mode = localStorage.getItem("vubaokhanh_theme_mode");
-      if (mode === "light") {
-        document.documentElement.classList.add("light");
-      }
-    }
-
     // 1. Initial hydration from localStorage
     applyStoredSettings();
     applyStoredSeo();

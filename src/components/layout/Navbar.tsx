@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/useLanguage";
 
@@ -15,33 +15,11 @@ export default function Navbar() {
 
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
 
-  const [isLightMode, setIsLightMode] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Read stored theme mode
-    const stored = localStorage.getItem("vubaokhanh_theme_mode");
-    if (stored === "light") {
-      setIsLightMode(true);
-      document.documentElement.classList.add("light");
-    }
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  function toggleThemeMode() {
-    const nextMode = !isLightMode;
-    setIsLightMode(nextMode);
-    if (nextMode) {
-      document.documentElement.classList.add("light");
-      localStorage.setItem("vubaokhanh_theme_mode", "light");
-    } else {
-      document.documentElement.classList.remove("light");
-      localStorage.setItem("vubaokhanh_theme_mode", "dark");
-    }
-  }
 
   function handleNavClick(href: string) {
     setMobileOpen(false);
@@ -139,14 +117,6 @@ export default function Navbar() {
 
           {/* CTA & Language Switcher */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Theme Mode Toggle (Sun/Moon) */}
-            <button
-              onClick={toggleThemeMode}
-              className="p-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
-              title={isLightMode ? "Switch to Dark Mode" : "Switch to Light Mode"}
-            >
-              {isLightMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#00D9FF]" />}
-            </button>
 
             {/* Language Switcher */}
             <div className="flex items-center gap-0.5 border border-white/[0.06] bg-white/[0.02] p-1 rounded-full text-[9px] font-mono select-none">
