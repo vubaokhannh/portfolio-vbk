@@ -1,15 +1,9 @@
 import { ImageResponse } from "next/og";
 import { postsEn } from "@/data/posts";
 
-export const dynamic = "force-static";
 export const alt = "Vũ Bảo Khanh Blog";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
-// Pre-generate OG images for every blog slug at build time
-export function generateStaticParams() {
-  return postsEn.map((post) => ({ slug: post.slug }));
-}
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -19,7 +13,7 @@ export default async function OGImage({ params }: Props) {
   const { slug } = await params;
   const post = postsEn.find((p) => p.slug === slug);
 
-  const title = post?.title ?? "Blog — Vũ Bảo Khanh";
+  const title = post?.title ?? "Blog - Vũ Bảo Khanh";
   const description = post?.description ?? "Chia sẻ kỹ thuật từ một Fullstack Developer";
   const tags = post?.tags ?? [];
   const date = post?.date ?? "";

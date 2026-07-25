@@ -24,8 +24,8 @@ export default function Navbar() {
   function handleNavClick(href: string) {
     setMobileOpen(false);
 
-    // If on blog page and clicked a hash link, go to home page first
-    if (pathname.startsWith("/blog") && href.startsWith("#")) {
+    // If on subpage and clicked a hash link, go to home page first with target hash
+    if (pathname !== "/" && href.startsWith("#")) {
       window.location.href = `/${href}`;
       return;
     }

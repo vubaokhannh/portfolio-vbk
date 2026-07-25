@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { skillGroupsEn, skillGroupsVi } from "@/data/skills";
+import { getSkills } from "@/lib/data-fetchers";
 import { useLanguage } from "@/hooks/useLanguage";
-import type { Skill } from "@/types";
+import type { Skill, SkillGroup } from "@/types";
 import {
   Folder,
   FolderOpen,
@@ -352,7 +353,18 @@ function CodeLine({ line, language }: { line: string; language: string }) {
 
 export default function Skills() {
   const { language, t } = useLanguage();
-  const skillGroups = language === "en" ? skillGroupsEn : skillGroupsVi;
+  const [skillGroups, setSkillGroups] = useState<SkillGroup[]>(
+    language === "en" ? skillGroupsEn : skillGroupsVi
+  );
+
+  useEffect(() => {
+    setSkillGroups(language === "en" ? skillGroupsEn : skillGroupsVi);
+
+    getSkills(language).then((data) => {
+      if (data && data.length > 0) setSkillGroups(data);
+    });
+  }, [language]);
+
   const allSkills = skillGroups.flatMap((group) => group.skills);
 
   const [openTabs, setOpenTabs] = useState<string[]>(["react.tsx"]);

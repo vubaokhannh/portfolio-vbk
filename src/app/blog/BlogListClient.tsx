@@ -1,23 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { postsEn, postsVi } from "@/data/posts";
+import { postsEn, postsVi, BlogPost } from "@/data/posts";
+import { getBlogPosts } from "@/lib/data-fetchers";
 import { useLanguage } from "@/hooks/useLanguage";
-import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Tag, Search, X } from "lucide-react";
 
 export default function BlogListClient() {
   const { language } = useLanguage();
-  const posts = language === "en" ? postsEn : postsVi;
+  const [posts, setPosts] = useState<BlogPost[]>(
+    language === "en" ? postsEn : postsVi
+  );
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    setPosts(language === "en" ? postsEn : postsVi);
+    getBlogPosts(language).then((data) => {
+      setPosts(data);
+    });
+  }, [language]);
 
   // Extract all unique tags
   const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
 
-  const filteredPosts = selectedTag
-    ? posts.filter((p) => p.tags.includes(selectedTag))
-    : posts;
+  const filteredPosts = posts.filter((p) => {
+    const matchTag = !selectedTag || p.tags.includes(selectedTag);
+    const q = searchQuery.trim().toLowerCase();
+    const matchSearch =
+      !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.tags.some((t) => t.toLowerCase().includes(q));
+    return matchTag && matchSearch;
+  });
 
   const isVi = language === "vi";
 
@@ -65,6 +83,41 @@ export default function BlogListClient() {
               : "Deep dives on backend scaling, real-time systems, Laravel performance hacks, and frontend components."}
           </motion.p>
         </div>
+
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="max-w-xl mx-auto mb-8"
+        >
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={isVi ? "Tìm kiếm bài viết..." : "Search articles..."}
+              className="w-full pl-11 pr-10 py-3 rounded-2xl border border-white/[0.07] bg-[#0F1117]/80 backdrop-blur-sm text-sm text-white placeholder:text-white/25 focus:border-white/15 focus:outline-none transition-colors"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full text-white/30 hover:text-white/60 transition-colors cursor-pointer"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+          {searchQuery && (
+            <p className="text-center text-xs text-white/30 font-mono mt-2">
+              {filteredPosts.length > 0
+                ? `${filteredPosts.length} ${isVi ? "bài viết tìm thấy" : "article(s) found"}`
+                : isVi ? "Không tìm thấy kết quả" : "No results found"}
+            </p>
+          )}
+        </motion.div>
 
         {/* Tags Filtering Navigation */}
         <motion.div
@@ -168,6 +221,28 @@ export default function BlogListClient() {
             </motion.article>
           ))}
         </div>
+
+        {/* Empty state */}
+        {filteredPosts.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-20 space-y-4"
+          >
+            <div className="text-5xl">🔍</div>
+            <p className="text-white/50 font-mono text-sm">
+              {isVi
+                ? `Không tìm thấy bài viết nào cho "${searchQuery || selectedTag}"`
+                : `No articles found for "${searchQuery || selectedTag}"`}
+            </p>
+            <button
+              onClick={() => { setSearchQuery(""); setSelectedTag(null); }}
+              className="text-xs font-mono text-[#00D9FF] hover:underline cursor-pointer"
+            >
+              {isVi ? "Xóa bộ lọc" : "Clear filters"}
+            </button>
+          </motion.div>
+        )}
       </div>
     </main>
   );

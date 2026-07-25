@@ -5,7 +5,7 @@ import BlogListClient from "./BlogListClient";
 
 // ── Next.js Dynamic SEO Metadata for /blog page ──
 export const metadata: Metadata = {
-  title: "Blog & Chia sẻ kỹ thuật | Vũ Bảo Khanh — Fullstack Web Engineer",
+  title: "Blog & Chia sẻ kỹ thuật | Vũ Bảo Khanh - Fullstack Web Engineer",
   description:
     "Các bài viết chia sẻ về tối ưu hiệu suất cơ sở dữ liệu, kiến trúc hệ thống thời gian thực (NestJS/Socket.io), lập trình Laravel/React và các dự án thực tế của Vũ Bảo Khanh.",
   alternates: {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     locale: "vi_VN",
     alternateLocale: ["en_US"],
     url: "https://vubaokhanh.tech/blog",
-    title: "Blog & Chia sẻ kỹ thuật | Vũ Bảo Khanh — Fullstack Web Engineer",
+    title: "Blog & Chia sẻ kỹ thuật | Vũ Bảo Khanh - Fullstack Web Engineer",
     description:
       "Các bài viết chia sẻ về tối ưu hiệu suất cơ sở dữ liệu, kiến trúc hệ thống thời gian thực (NestJS/Socket.io), lập trình Laravel/React và các dự án thực tế của Vũ Bảo Khanh.",
     siteName: "Vũ Bảo Khanh Portfolio",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog & Chia sẻ kỹ thuật | Vũ Bảo Khanh — Fullstack Web Engineer",
+    title: "Blog & Chia sẻ kỹ thuật | Vũ Bảo Khanh - Fullstack Web Engineer",
     description:
       "Các bài viết chia sẻ về tối ưu hiệu suất cơ sở dữ liệu, kiến trúc hệ thống thời gian thực (NestJS/Socket.io), lập trình Laravel/React và các dự án thực tế của Vũ Bảo Khanh.",
     images: ["https://vubaokhanh.tech/og-image.png"],
@@ -50,7 +50,7 @@ export default function BlogListPage() {
     <>
       <Navbar />
       {/* sr-only h1 ensures Google crawler always finds the primary heading in SSR HTML */}
-      <h1 className="sr-only">Blog &amp; Chia sẻ kỹ thuật — Vũ Bảo Khanh Fullstack Developer</h1>
+      <h1 className="sr-only">Blog &amp; Chia sẻ kỹ thuật - Vũ Bảo Khanh Fullstack Developer</h1>
       <BlogListClient />
       <Footer />
     </>

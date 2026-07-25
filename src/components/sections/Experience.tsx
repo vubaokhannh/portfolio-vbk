@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { experienceEn, experienceVi } from "@/data/experience";
+import { getExperience } from "@/lib/data-fetchers";
 import { useLanguage } from "@/hooks/useLanguage";
+import type { ExperienceItem } from "@/types";
 import { GitCommit } from "lucide-react";
 
 export default function Experience() {
@@ -12,7 +14,18 @@ export default function Experience() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const { language, t } = useLanguage();
-  const experienceList = language === "en" ? experienceEn : experienceVi;
+  const [experienceList, setExperienceList] = useState<ExperienceItem[]>(
+    language === "en" ? experienceEn : experienceVi
+  );
+
+  useEffect(() => {
+    // Keep local static data in sync on language changes
+    setExperienceList(language === "en" ? experienceEn : experienceVi);
+
+    getExperience(language).then((data) => {
+      setExperienceList(data);
+    });
+  }, [language]);
 
   useEffect(() => {
     let ScrollTrigger: unknown = null;

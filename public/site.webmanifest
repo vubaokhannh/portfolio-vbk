@@ -1,11 +1,39 @@
 {
-  "name": "Vu Bao Khanh — Fullstack Developer",
-  "short_name": "VBK",
-  "description": "Portfolio of Vu Bao Khanh — Fullstack Developer specializing in Laravel, NestJS, React & Next.js.",
+  "name": "Vũ Bảo Khanh — Fullstack Developer Portfolio",
+  "short_name": "VBK Portfolio",
+  "description": "Personal portfolio & services of Vũ Bảo Khanh (Vu Bao Khanh) — Fullstack Developer specializing in Laravel, NestJS, React & Next.js, based in Vietnam.",
+  "lang": "vi",
+  "dir": "ltr",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#050505",
   "theme_color": "#050505",
+  "categories": ["portfolio", "developer", "technology", "business"],
+  "shortcuts": [
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read technical articles by Vũ Bảo Khanh",
+      "url": "/blog",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Projects",
+      "short_name": "Projects",
+      "description": "Browse portfolio projects",
+      "url": "/#projects",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Get in touch with Vũ Bảo Khanh",
+      "url": "/#contact",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    }
+  ],
   "icons": [
     {
       "src": "/favicon-16x16.png",

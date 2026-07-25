@@ -220,9 +220,11 @@ body {
 .aurora-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(100px); /* Reduced from 120px for better GPU performance */
   opacity: 0.15;
   mix-blend-mode: screen;
+  will-change: transform; /* Promote to its own GPU composite layer */
+  transform: translateZ(0); /* Force hardware acceleration */
 }
 
 /* ============================================================
@@ -261,12 +263,30 @@ body {
   will-change: transform;
 }
 
-/* ============================================================
-   FOCUS RING
-   ============================================================ */
-:focus-visible {
-  outline: 2px solid var(--accent-cyan);
-  outline-offset: 4px;
+/* Disable default browser pink/red invalid borders & outline rings */
+input, textarea, select {
+  outline: none;
+}
+
+input:invalid, textarea:invalid, select:invalid {
+  box-shadow: none;
+}
+
+/* Custom focus ring — replaces browser default, maintains keyboard accessibility (WCAG 2.1 AA) */
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid rgba(0, 217, 255, 0.7);
+  outline-offset: 2px;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.12);
+}
+
+/* Global interactive element focus ring for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid rgba(0, 217, 255, 0.8);
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
@@ -391,6 +411,31 @@ body {
 
 .animate-aurora {
   animation: aurora-shift 8s ease-in-out infinite;
+}
+
+/* ============================================================
+   REDUCED MOTION — respect user’s accessibility preferences
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-aurora,
+  .animate-blink {
+    animation: none !important;
+  }
+
+  /* Keep transforms but skip motion */
+  .card-premium:hover {
+    transform: none;
+  }
 }
 
 /* ============================================================

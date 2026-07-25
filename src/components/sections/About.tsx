@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { personalEn, personalVi } from "@/data/personal";
+import { getPersonalInfo } from "@/lib/data-fetchers";
 import { useLanguage } from "@/hooks/useLanguage";
+import type { PersonalInfo } from "@/types";
 import {
   Calendar,
   Package,
@@ -13,7 +15,9 @@ import {
   Terminal,
   FileText,
   Code2,
+  Eye,
 } from "lucide-react";
+import { CvModal } from "@/components/ui/CvModal";
 
 interface TechItem {
   name: string;
@@ -30,8 +34,20 @@ type TabType = "profile" | "status" | "stack" | "press";
 export default function About() {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
+  const [isCvOpen, setIsCvOpen] = useState(false);
   const { language, t } = useLanguage();
-  const p = language === "en" ? personalEn : personalVi;
+  const [p, setP] = useState<PersonalInfo>(
+    language === "en" ? personalEn : personalVi
+  );
+
+  useEffect(() => {
+    // Keep local static data in sync on language changes
+    setP(language === "en" ? personalEn : personalVi);
+
+    getPersonalInfo(language).then((data) => {
+      setP(data);
+    });
+  }, [language]);
 
   const techCategories: TechCategory[] = [
     {
@@ -104,16 +120,18 @@ export default function About() {
                 </p>
               </div>
 
-              {p.cvUrl && (
-                <a
-                  href={p.cvUrl}
-                  download
-                  className="inline-flex items-center gap-2 text-xs font-mono font-bold px-4 py-2.5 rounded-xl border border-white/[0.08] hover:border-cyan-500/30 bg-white/[0.02] hover:bg-cyan-500/5 text-white/70 hover:text-white transition-all duration-300 w-fit mt-2"
-                >
-                  <Download className="w-4 h-4" />
-                  {t("about.downloadResume")}
-                </a>
-              )}
+              <button
+                type="button"
+                onClick={() => setIsCvOpen(true)}
+                className="group relative inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-cyan-500/35 bg-gradient-to-r from-cyan-500/10 via-violet-500/10 to-cyan-500/10 hover:border-cyan-500/70 hover:from-cyan-500/20 hover:to-violet-500/20 text-white text-xs font-mono font-bold tracking-wider transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-[0_0_20px_rgba(0,217,255,0.15)] hover:shadow-[0_0_28px_rgba(0,217,255,0.35)] w-fit mt-2 cursor-pointer backdrop-blur-md"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
+                </span>
+                <Eye className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
+                <span>{t("about.downloadResume")}</span>
+              </button>
             </div>
 
             {/* Quick Stats Grid */}
@@ -490,6 +508,13 @@ export default function About() {
           </div>
         </div>
       </div>
+
+      {/* PDF CV Modal */}
+      <CvModal
+        isOpen={isCvOpen}
+        onClose={() => setIsCvOpen(false)}
+        cvUrl={p.cvUrl || "/cv-vubaokhanh.pdf"}
+      />
     </section>
   );
 }

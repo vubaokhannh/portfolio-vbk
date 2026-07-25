@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { SectionHeading } from "@/components/ui/AnimatedText";
 import { projectsEn, projectsVi } from "@/data/projects";
+import { getProjects } from "@/lib/data-fetchers";
 import { useLanguage } from "@/hooks/useLanguage";
 import type { Project } from "@/types";
 import { ArrowUpRight, Github, Zap } from "lucide-react";
@@ -212,7 +213,18 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function Projects() {
   const { language, t } = useLanguage();
-  const projectsList = language === "en" ? projectsEn : projectsVi;
+  const [projectsList, setProjectsList] = useState<Project[]>(
+    language === "en" ? projectsEn : projectsVi
+  );
+
+  useEffect(() => {
+    // Keep local static data in sync on language changes
+    setProjectsList(language === "en" ? projectsEn : projectsVi);
+
+    getProjects(language).then((data) => {
+      setProjectsList(data);
+    });
+  }, [language]);
 
   return (
     <section

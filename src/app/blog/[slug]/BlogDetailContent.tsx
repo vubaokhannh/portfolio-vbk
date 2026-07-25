@@ -16,8 +16,25 @@ export default function BlogDetailContent({ postEn, postVi }: BlogDetailContentP
   const [isTocOpen, setIsTocOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("");
 
-  // Pick the correct language post, fallback if one is missing
-  const post = language === "en" ? postEn || postVi : postVi || postEn;
+  const activePostEn = postEn && (postEn.title?.trim() || postEn.content?.trim()) ? postEn : null;
+  const activePostVi = postVi && (postVi.title?.trim() || postVi.content?.trim()) ? postVi : null;
+
+  const rawPost = language === "en"
+    ? (activePostEn || activePostVi)
+    : (activePostVi || activePostEn);
+
+  // Fallback for content if content in selected language is empty
+  const contentFallback = language === "en"
+    ? (postEn?.content?.trim() || postVi?.content?.trim() || "")
+    : (postVi?.content?.trim() || postEn?.content?.trim() || "");
+
+  const post = useMemo(() => {
+    if (!rawPost) return null;
+    return {
+      ...rawPost,
+      content: rawPost.content?.trim() || contentFallback,
+    };
+  }, [rawPost, contentFallback]);
 
   const isVi = language === "vi";
 
@@ -25,10 +42,19 @@ export default function BlogDetailContent({ postEn, postVi }: BlogDetailContentP
   const { processedContent, headings } = useMemo(() => {
     if (!post || !post.content) return { processedContent: "", headings: [] };
 
+    let contentToProcess = post.content;
+    // Format plain text to HTML paragraphs if no HTML elements exist
+    if (!/<[a-z][\s\S]*>/i.test(contentToProcess)) {
+      contentToProcess = contentToProcess
+        .split(/\n\s*\n/)
+        .map((para) => `<p>${para.replace(/\n/g, "<br/>")}</p>`)
+        .join("");
+    }
+
     const headingsList: { id: string; text: string; level: number }[] = [];
     let headingCounter = 0;
 
-    const processed = post.content.replace(
+    const processed = contentToProcess.replace(
       /<(h2|h3)([^>]*?)>([\s\S]*?)<\/\1>/gi,
       (match, tag, attributes, contentText) => {
         // Strip internal tags

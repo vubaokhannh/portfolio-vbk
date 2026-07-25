@@ -66,6 +66,15 @@ export interface SocialLink {
   icon: string;
 }
 
+export interface ThemeConfig {
+  themeColor?: string;
+  secondaryColor?: string;
+  bgColor?: string;
+  cardBgColor?: string;
+  blurStrength?: string;
+  borderRadius?: string;
+}
+
 export interface PersonalInfo {
   name: string;
   firstName: string;
@@ -81,6 +90,8 @@ export interface PersonalInfo {
   cvUrl: string;
   stack: string[];
   stats: Stat[];
+  themeColor?: string;
+  themeConfig?: ThemeConfig;
 }
 
 export interface Stat {

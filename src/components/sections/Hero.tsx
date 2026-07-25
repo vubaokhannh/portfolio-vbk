@@ -1,12 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { personalEn, personalVi } from "@/data/personal";
+import { getPersonalInfo } from "@/lib/data-fetchers";
+import type { PersonalInfo } from "@/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import { floatAnimation } from "@/animations/variants";
-import { ArrowRight, Download, Github, Sparkles } from "lucide-react";
+import { ArrowRight, Download, Github, Sparkles, Eye } from "lucide-react";
+import { CvModal } from "@/components/ui/CvModal";
 
 // Hệ thống thẻ công nghệ mở rộng từ CV - sử dụng ký tự text hình học cao cấp để đổi màu neon động
 const TECH_CARDS = [
@@ -23,7 +27,19 @@ const TECH_CARDS = [
 
 export default function Hero() {
   const { language, t } = useLanguage();
-  const p = language === "en" ? personalEn : personalVi;
+  const [p, setP] = useState<PersonalInfo>(
+    language === "en" ? personalEn : personalVi
+  );
+  const [isCvOpen, setIsCvOpen] = useState(false);
+
+  useEffect(() => {
+    // Keep local static data in sync on language changes
+    setP(language === "en" ? personalEn : personalVi);
+
+    getPersonalInfo(language).then((data) => {
+      setP(data);
+    });
+  }, [language]);
 
   return (
     <section
@@ -33,8 +49,8 @@ export default function Hero() {
     >
       <AuroraBackground intensity="medium" />
 
-      {/* Floating tech cards — Bố trí tọa độ hình học so le bất đối xứng quanh tâm chữ */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Floating tech cards — decorative, hidden from screen readers */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         {TECH_CARDS.map((tech, i) => {
           const positions = [
             { top: "15%", left: "6%" }, // Laravel
@@ -176,14 +192,18 @@ export default function Hero() {
           </MagneticButton>
 
           <MagneticButton
-            href={p.cvUrl}
+            onClick={() => setIsCvOpen(true)}
             variant="secondary"
             size="lg"
-            download
             id="hero-download-cv"
+            className="border-[#00D9FF]/40 hover:border-[#00D9FF]/70 bg-gradient-to-r from-[#00D9FF]/10 via-[#7C3AED]/10 to-[#00D9FF]/10 hover:from-[#00D9FF]/20 hover:to-[#7C3AED]/25 shadow-[0_0_20px_rgba(0,217,255,0.18)] hover:shadow-[0_0_32px_rgba(0,217,255,0.35)]"
           >
-            <Download className="w-4 h-4" />
-            {t("hero.downloadCv")}
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00D9FF] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00D9FF]" />
+            </span>
+            <Eye className="w-4 h-4 text-[#00D9FF]" />
+            <span>{t("hero.downloadCv")}</span>
           </MagneticButton>
 
           <MagneticButton
@@ -216,6 +236,13 @@ export default function Hero() {
           />
         </motion.div>
       </div>
+
+      {/* PDF CV Modal */}
+      <CvModal
+        isOpen={isCvOpen}
+        onClose={() => setIsCvOpen(false)}
+        cvUrl={p.cvUrl || "/cv-vubaokhanh.pdf"}
+      />
     </section>
   );
 }

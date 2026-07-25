@@ -73,7 +73,7 @@ export const translations = {
       experience: "Kinh nghiệm",
       contact: "Liên hệ",
       blog: "Blog",
-      hireMe: "Tuyển dụng",
+      hireMe: "Liên hệ",
     },
     hero: {
       available: "Sẵn sàng cho các cơ hội mới",

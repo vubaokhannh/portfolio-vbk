@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useLenis } from "@/hooks/useLenis";
 
@@ -23,6 +23,13 @@ export default function Home() {
   const [loaderDone, setLoaderDone] = useState(false);
 
   const handleLoaderComplete = useCallback(() => setLoaderDone(true), []);
+
+  // Safety net: after 3s, always reveal content regardless of loader state.
+  // Prevents LCP penalty on slow connections or if loader stalls.
+  useEffect(() => {
+    const timer = setTimeout(() => setLoaderDone(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Initialize Lenis smooth scroll
   useLenis();
