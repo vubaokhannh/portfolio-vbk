@@ -1,23 +1,25 @@
 import { MetadataRoute } from "next";
 import { postsEn } from "@/data/posts";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://vubaokhanh.tech";
+  const baseUrl = SITE_URL;
+  const now = new Date();
 
   // Base routes
   const routes = [
     {
       url: baseUrl,
-      lastModified: new Date("2025-07-13"),
-      changeFrequency: "monthly" as const,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
       priority: 1,
       images: [`${baseUrl}/og-image.png`],
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date("2025-07-13"),
+      lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },

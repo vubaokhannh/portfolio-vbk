@@ -10,11 +10,6 @@ export const metadata: Metadata = {
     "Các bài viết chia sẻ về tối ưu hiệu suất cơ sở dữ liệu, kiến trúc hệ thống thời gian thực (NestJS/Socket.io), lập trình Laravel/React và các dự án thực tế của Vũ Bảo Khanh.",
   alternates: {
     canonical: "https://vubaokhanh.tech/blog",
-    languages: {
-      "en": "https://vubaokhanh.tech/blog",
-      "vi": "https://vubaokhanh.tech/blog",
-      "x-default": "https://vubaokhanh.tech/blog",
-    },
   },
   openGraph: {
     type: "website",
@@ -49,8 +44,6 @@ export default function BlogListPage() {
   return (
     <>
       <Navbar />
-      {/* sr-only h1 ensures Google crawler always finds the primary heading in SSR HTML */}
-      <h1 className="sr-only">Blog &amp; Chia sẻ kỹ thuật — Vũ Bảo Khanh Fullstack Developer</h1>
       <BlogListClient />
       <Footer />
     </>

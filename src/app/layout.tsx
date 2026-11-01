@@ -3,6 +3,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { personal } from "@/data/personal";
 import { LanguageProvider } from "@/hooks/useLanguage";
+import { SITE_URL } from "@/lib/site";
+import CreativeEffects from "@/components/ui/CreativeEffects";
 
 const sansFont = Inter({
   subsets: ["latin", "vietnamese"],
@@ -24,25 +26,19 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vubaokhanh.tech"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${personal.name} — Fullstack Developer`,
+    default: `${personal.name} - Fullstack Developer`,
     template: `%s | ${personal.name}`,
   },
   description:
-    "Trang web cá nhân và dịch vụ phát triển web của Vũ Bảo Khanh (Vu Bao Khanh) — Lập trình viên Fullstack chuyên nghiệp (Laravel, NestJS, React, Next.js) tại Việt Nam.",
+    "Trang web cá nhân của Vũ Bảo Khanh - Lập trình viên Fullstack (React, TypeScript, NestJS, PostgreSQL, PHP) tại TP. Hồ Chí Minh, Việt Nam.",
   alternates: {
-    canonical: "https://vubaokhanh.tech",
-    languages: {
-      "en": "https://vubaokhanh.tech",
-      "vi": "https://vubaokhanh.tech",
-      "x-default": "https://vubaokhanh.tech",
-    },
+    canonical: SITE_URL,
   },
   keywords: [
     "Vu Bao Khanh",
     "Vũ Bảo Khanh",
-    "Vũ Bảo Khanh PC08901",
     "Vu Bao Khanh Developer",
     "vubaokhanh.tech",
     "vubaokhanh",
@@ -71,29 +67,29 @@ export const metadata: Metadata = {
   publisher: personal.name,
   openGraph: {
     type: "website",
-    locale: "en_US",
-    alternateLocale: ["vi_VN"],
-    url: "https://vubaokhanh.tech",
-    title: `${personal.name} — Fullstack Developer `,
+    locale: "vi_VN",
+    alternateLocale: ["en_US"],
+    url: SITE_URL,
+    title: `${personal.name} - Fullstack Developer`,
     description:
-      "Portfolio và dịch vụ thiết kế phát triển website của Vũ Bảo Khanh (Vu Bao Khanh) — Lập trình viên Fullstack Laravel, React & NestJS.",
+      "Trang web cá nhân của Vũ Bảo Khanh - Lập trình viên Fullstack (React, TypeScript, NestJS, PostgreSQL, PHP) tại TP. Hồ Chí Minh, Việt Nam.",
     siteName: `${personal.name} Portfolio`,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: `${personal.name} — Fullstack Developer `,
+        alt: `${personal.name} - Fullstack Developer`,
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${personal.name} — Fullstack Developer `,
+    title: `${personal.name} - Fullstack Developer`,
     description:
-      "Portfolio và dịch vụ thiết kế phát triển website của Vũ Bảo Khanh.",
-    images: [{ url: "/og-image.png", alt: `${personal.name} — Fullstack Developer` }],
+      "Trang web cá nhân của Vũ Bảo Khanh - Lập trình viên Fullstack (React, TypeScript, NestJS, PostgreSQL, PHP) tại TP. Hồ Chí Minh.",
+    images: [{ url: "/og-image.png", alt: `${personal.name} - Fullstack Developer` }],
     creator: "@vubaokhannh",
   },
   robots: {
@@ -137,14 +133,11 @@ export default function RootLayout({
       <head>
         {/* Author */}
         <meta name="author" content="Vu Bao Khanh" />
-        {/* Preconnect for Google Fonts to improve LCP */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* DNS Prefetch for external domains used in content */}
         <link rel="dns-prefetch" href="//github.com" />
         <link rel="dns-prefetch" href="//linkedin.com" />
-        <link rel="dns-prefetch" href="//web.krello.biz" />
-        <link rel="dns-prefetch" href="//caodang.fpt.edu.vn" />
+        <link rel="dns-prefetch" href="//krello.click" />
+        <link rel="dns-prefetch" href="//streamhub.tforge.life" />
 
         {/* ── Person Schema ── */}
         <script
@@ -161,19 +154,20 @@ export default function RootLayout({
               url: "https://vubaokhanh.tech",
               image: "https://vubaokhanh.tech/og-image.png",
               jobTitle: personal.role,
-              description: "Vu Bao Khanh (Vũ Bảo Khanh) — Fullstack Developer portfolio specializing in custom web development, backend engineering (Laravel, NestJS) and frontend frameworks.",
-              email: "vubaokhanh2311@gmail.com",
+              description: "Vu Bao Khanh (Vũ Bảo Khanh) - Fullstack Developer specializing in React, TypeScript, NestJS, PostgreSQL and PHP.",
+              email: personal.email,
+              telephone: personal.phone,
               sameAs: [personal.github, personal.linkedin, personal.facebook],
               worksFor: {
                 "@type": "Organization",
-                name: "BM WEB",
+                name: "BM WEB Co., Ltd",
               },
               hasOccupation: [
                 {
                   "@type": "Role",
-                  roleName: "Fullstack PHP Developer",
+                  roleName: "PHP Developer",
                   startDate: "2026-01",
-                  worksFor: { "@type": "Organization", name: "BM WEB" },
+                  worksFor: { "@type": "Organization", name: "BM WEB Co., Ltd" },
                 },
                 {
                   "@type": "Role",
@@ -195,7 +189,8 @@ export default function RootLayout({
               knowsAbout: [
                 "PHP", "Laravel", "React", "TypeScript", "NestJS",
                 "Node.js", "MySQL", "PostgreSQL", "Next.js", "Docker",
-                "Redis", "Prisma", "Web Development", "Backend Engineering",
+                "Redis", "Prisma", "BullMQ", "Socket.IO", "FFmpeg", "HLS",
+                "Web Development", "Backend Engineering",
                 "Frontend Development", "RESTful APIs", "System Design",
               ],
               nationality: {
@@ -204,7 +199,7 @@ export default function RootLayout({
               },
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Can Tho",
+                addressLocality: "Ho Chi Minh City",
                 addressCountry: "VN",
               },
               subjectOf: [
@@ -236,7 +231,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               "@id": "https://vubaokhanh.tech/#website",
-              name: `${personal.name} — Portfolio & Services`,
+              name: `${personal.name} - Portfolio & Services`,
               url: "https://vubaokhanh.tech",
               description: "Official portfolio of Vu Bao Khanh (Vũ Bảo Khanh), Fullstack Developer and Web Engineer.",
               author: { "@id": "https://vubaokhanh.tech/#person" },
@@ -255,12 +250,11 @@ export default function RootLayout({
               name: `${personal.name} Web Development Services`,
               image: "https://vubaokhanh.tech/og-image.png",
               url: "https://vubaokhanh.tech",
-              priceRange: "$$",
-              telephone: "",
-              email: "vubaokhanh2311@gmail.com",
+              email: personal.email,
+              telephone: personal.phone,
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Can Tho",
+                addressLocality: "Ho Chi Minh City",
                 addressCountry: "VN",
               },
               areaServed: "Worldwide",
@@ -306,7 +300,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* ── SoftwareApplication Schema — Projects ── */}
+        {/* ── SoftwareApplication Schema - Projects ── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -320,12 +314,27 @@ export default function RootLayout({
                   position: 1,
                   item: {
                     "@type": "SoftwareApplication",
-                    name: "Task Management System (Krello)",
+                    name: "StreamHub - Video Streaming Platform",
+                    applicationCategory: "MultimediaApplication",
+                    operatingSystem: "Web",
+                    url: "https://streamhub.tforge.life",
+                    author: { "@id": "https://vubaokhanh.tech/#person" },
+                    description: "Fullstack video streaming platform with an FFmpeg + BullMQ adaptive-bitrate HLS transcoding pipeline, custom HLS.js player, RBAC and PayOS (VietQR) payments.",
+                    programmingLanguage: ["TypeScript", "NestJS", "React", "PostgreSQL", "Redis", "BullMQ"],
+                    dateCreated: "2026",
+                  },
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  item: {
+                    "@type": "SoftwareApplication",
+                    name: "Krello - Real-Time Collaborative Task Management",
                     applicationCategory: "BusinessApplication",
                     operatingSystem: "Web",
-                    url: "https://web.krello.biz/",
+                    url: "https://krello.click/",
                     author: { "@id": "https://vubaokhanh.tech/#person" },
-                    description: "A real-time collaborative workspace inspired by Trello, featuring live data sync, role-based access control (RBAC), and mobile push notifications.",
+                    description: "A Trello-inspired real-time collaborative workspace with Socket.IO sync, JWT/OAuth authentication, RBAC and FCM push notifications.",
                     programmingLanguage: ["TypeScript", "NestJS", "React", "PostgreSQL", "Socket.IO"],
                     dateCreated: "2025",
                     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -333,7 +342,7 @@ export default function RootLayout({
                 },
                 {
                   "@type": "ListItem",
-                  position: 2,
+                  position: 3,
                   item: {
                     "@type": "SoftwareApplication",
                     name: "Online Vehicle Ticketing System",
@@ -347,7 +356,7 @@ export default function RootLayout({
                 },
                 {
                   "@type": "ListItem",
-                  position: 3,
+                  position: 4,
                   item: {
                     "@type": "SoftwareApplication",
                     name: "E-commerce Platform for Wine Sales",
@@ -364,7 +373,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* ── FAQPage Schema — Services (enables Google Rich Results) ── */}
+        {/* ── FAQPage Schema - Services (enables Google Rich Results) ── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -409,7 +418,7 @@ export default function RootLayout({
                   name: "Vũ Bảo Khanh có kinh nghiệm làm việc tại công ty nào?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Hiện tại tôi đang làm Fullstack PHP Developer tại BM WEB (từ tháng 1/2026). Trước đó tôi thực tập Frontend Developer tại Trung tâm Phần mềm Đại học Cần Thơ (CUSC) từ tháng 5 đến tháng 8 năm 2025.",
+                    text: "Hiện tại tôi đang làm PHP Developer tại Công ty TNHH BM WEB (từ tháng 1/2026). Trước đó tôi thực tập Frontend Developer tại Trung tâm Phần mềm Đại học Cần Thơ (CUSC) từ tháng 5 đến tháng 8 năm 2025.",
                   },
                 },
               ],
@@ -438,6 +447,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[#050505] text-white antialiased">
+        <CreativeEffects />
         <LanguageProvider>
           {children}
         </LanguageProvider>

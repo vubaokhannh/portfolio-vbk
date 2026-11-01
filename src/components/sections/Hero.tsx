@@ -1,6 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { ScrambleText } from "@/components/ui/ScrambleText";
+import { useMousePosition } from "@/hooks/useMousePosition";
 import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { personalEn, personalVi } from "@/data/personal";
@@ -10,23 +13,47 @@ import { ArrowRight, Download, Github, Sparkles } from "lucide-react";
 
 // Hệ thống thẻ công nghệ mở rộng từ CV - sử dụng ký tự text hình học cao cấp để đổi màu neon động
 const TECH_CARDS = [
-  { name: "Laravel", icon: "⬡", color: "#FF2D20", delay: 0 },
-  { name: "NestJS", icon: "⬢", color: "#E0234E", delay: 0.4 },
+  { name: "TypeScript", icon: "⭓", color: "#3178C6", delay: 0 },
   { name: "React", icon: "⚛", color: "#61DAFB", delay: 0.2 },
+  { name: "NestJS", icon: "⬢", color: "#E0234E", delay: 0.4 },
+  { name: "PostgreSQL", icon: "🐘", color: "#336791", delay: 0.6 },
   { name: "Next.js", icon: "▲", color: "#FFFFFF", delay: 0.8 },
-  { name: "TypeScript", icon: "⭓", color: "#3178C6", delay: 0.6 },
-  { name: "Filament", icon: "⚡", color: "#F59E0B", delay: 1.0 },
-  { name: "Docker", icon: "⛃", color: "#2496ED", delay: 1.2 },
+  { name: "Prisma", icon: "◭", color: "#5A67D8", delay: 1.0 },
+  { name: "PHP", icon: "⬡", color: "#8892BF", delay: 1.2 },
   { name: "Redis", icon: "⬓", color: "#DC382D", delay: 1.4 },
-  { name: "MySQL", icon: "⛁", color: "#4479A1", delay: 0.3 },
+  { name: "Docker", icon: "⛃", color: "#2496ED", delay: 0.3 },
 ];
 
 export default function Hero() {
   const { language, t } = useLanguage();
   const p = language === "en" ? personalEn : personalVi;
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const mouse = useMousePosition();
+
+  // Scroll-out: content drifts up, shrinks, blurs and fades
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const contentBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"]);
+
+  // Mouse depth parallax for the floating tech layer
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const layerX = useSpring(mx, { stiffness: 60, damping: 18 });
+  const layerY = useSpring(my, { stiffness: 60, damping: 18 });
+  useEffect(() => {
+    mx.set(mouse.normalizedX * -24);
+    my.set(mouse.normalizedY * -24);
+  }, [mouse.normalizedX, mouse.normalizedY, mx, my]);
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030307]"
       aria-label="Hero section"
@@ -34,7 +61,10 @@ export default function Hero() {
       <AuroraBackground intensity="medium" />
 
       {/* Floating tech cards — Bố trí tọa độ hình học so le bất đối xứng quanh tâm chữ */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <motion.div
+        className="absolute inset-0 pointer-events-none overflow-hidden"
+        style={{ x: layerX, y: layerY }}
+      >
         {TECH_CARDS.map((tech, i) => {
           const positions = [
             { top: "15%", left: "6%" }, // Laravel
@@ -74,10 +104,13 @@ export default function Hero() {
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Main Content */}
-      <div className="container-custom relative z-10 flex flex-col items-center text-center gap-8 pt-20">
+      <motion.div
+        className="container-custom relative z-10 flex flex-col items-center text-center gap-8 pt-20"
+        style={{ y: contentY, scale: contentScale, opacity: contentOpacity, filter: contentBlur }}
+      >
         {/* Eyebrow badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -127,7 +160,7 @@ export default function Hero() {
           <div className="flex items-center gap-3">
             <div className="h-px w-10 bg-gradient-to-r from-transparent to-white/10" />
             <span className="font-mono text-xs sm:text-sm text-white/40 tracking-[0.35em] uppercase font-bold">
-              {p.role}
+              <ScrambleText text={p.role} />
             </span>
             <div className="h-px w-10 bg-gradient-to-l from-transparent to-white/10" />
           </div>
@@ -215,7 +248,7 @@ export default function Hero() {
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

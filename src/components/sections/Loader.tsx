@@ -3,194 +3,201 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BOOT_SEQUENCE = [
-  { text: "Initializing Services...", delay: 250 },
-  { text: "Loading Projects...", delay: 650 },
-  { text: "Compiling Skills...", delay: 1050 },
-  { text: "Injecting Experiences...", delay: 1450 },
+import { isLoaderCompleted, setLoaderCompleted } from "@/lib/loaderState";
+
+// Cycles quickly through greetings, then lands on the name.
+const WORDS = [
+  "Xin chào",
+  "Hello",
+  "你好",
+  "こんにちは",
+  "Bonjour",
+  "안녕하세요",
+  "Vu Bao Khanh",
 ];
+
+const DURATION = 2200;
+const WORD_INTERVAL = 270;
 
 interface LoaderProps {
   onComplete: () => void;
 }
 
 export default function Loader({ onComplete }: LoaderProps) {
+  // Must be false on first render so client HTML matches the server's;
+  // the effect below bails out immediately if the loader already ran.
+  const [skip] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [currentLine, setCurrentLine] = useState(0);
-  const [phase, setPhase] = useState<"boot" | "ready" | "exit">("boot");
+  const [wordIndex, setWordIndex] = useState(0);
+  const [phase, setPhase] = useState<"boot" | "exit">("boot");
 
   useEffect(() => {
-    // Progress bar animation
+    // Only run loader once per session
+    if (skip || isLoaderCompleted()) {
+      setLoaderCompleted();
+      onComplete();
+      return;
+    }
+
+    let raf = 0;
+    const timers: ReturnType<typeof setTimeout>[] = [];
     const start = Date.now();
-    const duration = 2000;
 
     const tick = () => {
-      const elapsed = Date.now() - start;
-      const p = Math.min(elapsed / duration, 1);
-      // Eased progress
-      const eased = 1 - Math.pow(1 - p, 3);
+      const p = Math.min((Date.now() - start) / DURATION, 1);
+      // ease-in-out so the counter feels weighty
+      const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
       setProgress(Math.round(eased * 100));
-      if (p < 1) requestAnimationFrame(tick);
+      if (p < 1) raf = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
 
-    // Boot sequence lines
-    BOOT_SEQUENCE.forEach((item, i) => {
-      setTimeout(() => setCurrentLine(i + 1), item.delay);
-    });
+    const interval = setInterval(() => {
+      setWordIndex((i) => Math.min(i + 1, WORDS.length - 1));
+    }, WORD_INTERVAL);
 
-    // Show READY
-    setTimeout(() => setPhase("ready"), 1700);
+    timers.push(
+      setTimeout(() => {
+        setPhase("exit");
+        timers.push(
+          setTimeout(() => {
+            setLoaderCompleted();
+            onComplete();
+          }, 900)
+        );
+      }, DURATION + 350)
+    );
 
-    // Exit
-    setTimeout(() => {
-      setPhase("exit");
-      setTimeout(onComplete, 600);
-    }, 2200);
-  }, [onComplete]);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearInterval(interval);
+      timers.forEach(clearTimeout);
+    };
+  }, [skip, onComplete]);
+
+  if (skip) return null;
+
+  const isFinalWord = wordIndex === WORDS.length - 1;
 
   return (
     <AnimatePresence>
       {phase !== "exit" && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] overflow-hidden"
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[100] bg-[#050505] text-white"
+          exit={{ y: "-100%" }}
+          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          role="status"
+          aria-label="Loading portfolio"
         >
-          {/* Scanline */}
-          <div className="loader-scanline" />
+          {/* Curved bottom edge that flattens as the panel slides away */}
+          <svg
+            className="absolute left-0 top-full w-full h-[10vw] pointer-events-none"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <motion.path
+              fill="#050505"
+              initial={{ d: "M0 0 H100 Q50 100 0 0 Z" }}
+              animate={{ d: "M0 0 H100 Q50 100 0 0 Z" }}
+              exit={{ d: "M0 0 H100 Q50 0 0 0 Z" }}
+              transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            />
+          </svg>
 
-          {/* Background glow */}
+          {/* Soft color wash */}
           <div
             className="absolute inset-0 pointer-events-none"
+            aria-hidden="true"
             style={{
               background:
-                "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,217,255,0.05) 0%, transparent 70%)",
+                "radial-gradient(60% 50% at 15% 100%, rgba(0,217,255,0.12), transparent 70%), radial-gradient(50% 45% at 90% 0%, rgba(124,58,237,0.14), transparent 70%)",
             }}
           />
 
-          {/* Corner decorations */}
-          <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-[#00D9FF]/30" />
-          <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-[#00D9FF]/30" />
-          <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-[#00D9FF]/30" />
-          <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-[#00D9FF]/30" />
+          {/* Top bar */}
+          <div className="absolute top-0 inset-x-0 flex items-center justify-between px-6 md:px-12 pt-6 md:pt-8 font-mono text-[11px] tracking-[0.3em] uppercase text-white/40">
+            <span className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00D9FF] animate-pulse" />
+              Portfolio
+            </span>
+            <span>© {new Date().getFullYear()}</span>
+          </div>
 
-          <div className="relative z-10 flex flex-col items-center gap-10 w-full max-w-lg px-8">
-            {/* OS Title */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col items-center gap-2"
+          {/* Greeting */}
+          <div className="absolute inset-0 flex items-center justify-center px-6">
+            {/* aria-hidden: loader is decorative, real h1 is in Hero section */}
+            <p
+              aria-hidden="true"
+              key={wordIndex}
+              className="flex items-center gap-4 font-bold tracking-tight text-4xl sm:text-6xl md:text-7xl"
             >
-              <div className="flex items-center gap-3">
-                <motion.div
-                  className="w-2 h-2 rounded-full bg-[#00D9FF]"
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                />
-                <span className="font-mono text-xs text-white/30 tracking-[0.3em] uppercase">
-                  System v1.0.0
-                </span>
-              </div>
-              {/* aria-hidden: loader is decorative, real h1 is in Hero section */}
-              <p
-                aria-hidden="true"
-                className="font-mono text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight"
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.25 }}
+                className="w-3 h-3 md:w-4 md:h-4 rounded-full shrink-0"
+                style={{ background: "linear-gradient(135deg, #00D9FF, #7C3AED)" }}
+              />
+              <span
+                style={
+                  isFinalWord
+                    ? {
+                        background: "linear-gradient(135deg, #00D9FF, #7C3AED)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }
+                    : undefined
+                }
               >
-                BOOTING{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #00D9FF, #7C3AED)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  VUBAOKHANH.TECH
-                </span>
-              </p>
-            </motion.div>
+                {WORDS[wordIndex]}
+              </span>
+            </p>
+          </div>
 
-            {/* Terminal window */}
+          {/* Bottom: giant counter + meta */}
+          <div className="absolute bottom-0 inset-x-0 px-6 md:px-12 pb-8 md:pb-10 flex items-end justify-between gap-6">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="w-full rounded-xl border border-white/[0.08] bg-[#0F1117]/90 backdrop-blur overflow-hidden"
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="font-black leading-[0.8] tracking-tighter tabular-nums"
+              style={{
+                fontSize: "clamp(5rem, 18vw, 14rem)",
+                background: "linear-gradient(180deg, #ffffff 20%, rgba(255,255,255,0.15) 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
             >
-              {/* Terminal header */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
-                <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-                <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-                <div className="w-3 h-3 rounded-full bg-[#28C840]" />
-                <span className="ml-2 font-mono text-xs text-white/30">
-                  vubaokhanh@portfolio ~ init
-                </span>
-              </div>
-
-              {/* Terminal body */}
-              <div className="p-4 font-mono text-sm space-y-1 min-h-[120px]">
-                <p className="text-white/40">
-                  <span className="text-[#00D9FF]">$</span> ./boot --system vubaokhanh.tech
-                </p>
-                {BOOT_SEQUENCE.slice(0, currentLine).map((item, i) => (
-                  <motion.p
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-white/60"
-                  >
-                    <span className="text-[#28C840] mr-2">✓</span>
-                    {item.text}
-                  </motion.p>
-                ))}
-                {phase === "ready" && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-[#00D9FF] font-bold mt-2"
-                  >
-                    <span className="mr-2">⚡</span>
-                    SYSTEM READY
-                  </motion.p>
-                )}
-                {phase === "boot" && currentLine < BOOT_SEQUENCE.length && (
-                  <span className="inline-block w-2 h-4 bg-[#00D9FF] animate-blink ml-1 align-middle" />
-                )}
-              </div>
+              {progress}
+              <span className="text-[0.35em] align-top ml-1 tracking-normal">%</span>
             </motion.div>
 
-            {/* Progress bar */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="w-full flex flex-col gap-2"
+              className="hidden sm:flex flex-col items-end gap-1 text-right font-mono text-[11px] tracking-[0.25em] uppercase text-white/40 pb-2"
             >
-              <div className="flex justify-between items-center">
-                <span className="font-mono text-xs text-white/30">
-                  Initializing...
-                </span>
-                <span className="font-mono text-xs text-[#00D9FF]">
-                  {progress}%
-                </span>
-              </div>
-              <div className="h-px w-full bg-white/[0.06] rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #4F46E5, #7C3AED, #00D9FF)",
-                    width: `${progress}%`,
-                    boxShadow: "0 0 10px rgba(0,217,255,0.5)",
-                  }}
-                  transition={{ duration: 0.1 }}
-                />
-              </div>
+              <span className="text-white/70">Fullstack Developer</span>
+              <span>Ho Chi Minh City, VN</span>
+              <span>React · NestJS · PostgreSQL</span>
             </motion.div>
+          </div>
+
+          {/* Hairline progress */}
+          <div className="absolute bottom-0 inset-x-0 h-[3px] bg-white/[0.06]">
+            <div
+              className="h-full"
+              style={{
+                width: `${progress}%`,
+                background: "linear-gradient(90deg, #4F46E5, #7C3AED, #00D9FF)",
+                boxShadow: "0 0 14px rgba(0,217,255,0.6)",
+              }}
+            />
           </div>
         </motion.div>
       )}

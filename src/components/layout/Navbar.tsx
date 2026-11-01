@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { Menu, X } from "lucide-react";
@@ -12,8 +13,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const progress = useScrollProgress();
   const { language, setLanguage, t } = useLanguage();
-
-  const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -24,9 +25,9 @@ export default function Navbar() {
   function handleNavClick(href: string) {
     setMobileOpen(false);
 
-    // If on blog page and clicked a hash link, go to home page first
-    if (pathname.startsWith("/blog") && href.startsWith("#")) {
-      window.location.href = `/${href}`;
+    // If on another page and clicked a hash link, navigate smoothly via Next.js SPA router
+    if (pathname !== "/" && href.startsWith("#")) {
+      router.push(href === "#hero" ? "/" : `/${href}`);
       return;
     }
 

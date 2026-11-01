@@ -35,29 +35,92 @@ export default function About() {
 
   const techCategories: TechCategory[] = [
     {
-      title: language === "en" ? "Backend & Core" : "Backend & Cốt lõi",
+      title: language === "en" ? "Languages" : "Ngôn ngữ",
       items: [
-        { name: "Laravel", color: "#FF2D20" },
-        { name: "Node.js", color: "#339933" },
-        { name: "MySQL", color: "#00758F" },
-        { name: "Filament", color: "#F59E0B" },
+        { name: "TypeScript", color: "#3178C6" },
+        { name: "JavaScript", color: "#F7DF1E" },
+        { name: "PHP", color: "#8892BF" },
       ],
     },
     {
       title: language === "en" ? "Frontend & UI" : "Frontend & Giao diện",
       items: [
         { name: "React", color: "#61DAFB" },
-        { name: "TypeScript", color: "#3178C6" },
+        { name: "Next.js", color: "#FFFFFF" },
         { name: "Tailwind CSS", color: "#38BDF8" },
+        { name: "Mantine UI", color: "#339AF0" },
+        { name: "Zustand", color: "#C9A66B" },
+        { name: "TanStack Query", color: "#FF4154" },
+        { name: "dnd-kit", color: "#7C3AED" },
       ],
     },
     {
-      title: language === "en" ? "DevOps & Workflow" : "DevOps & Quy trình",
+      title: language === "en" ? "Backend & Core" : "Backend & Cốt lõi",
+      items: [
+        { name: "Node.js", color: "#339933" },
+        { name: "NestJS", color: "#E0234E" },
+        { name: "Prisma ORM", color: "#5A67D8" },
+        { name: "RESTful APIs", color: "#00D9FF" },
+        { name: "Socket.IO", color: "#FFFFFF" },
+        { name: "BullMQ", color: "#E0234E" },
+      ],
+    },
+    {
+      title: language === "en" ? "Databases & Caching" : "Cơ sở dữ liệu & Cache",
+      items: [
+        { name: "PostgreSQL", color: "#336791" },
+        { name: "MySQL", color: "#00758F" },
+        { name: "Redis", color: "#DC382D" },
+      ],
+    },
+    {
+      title: language === "en" ? "Tools & Technologies" : "Công cụ & Công nghệ",
       items: [
         { name: "Docker", color: "#2496ED" },
+        { name: "Git", color: "#F05032" },
+        { name: "JWT", color: "#D63AFF" },
+        { name: "OAuth 2.0", color: "#EB5424" },
+        { name: "FCM", color: "#FFCA28" },
+        { name: "FFmpeg", color: "#007808" },
+        { name: "HLS.js", color: "#00D9FF" },
+        { name: "Cloudflare R2", color: "#F6821F" },
       ],
     },
   ];
+
+  // Entries rendered in the profile.json tab
+  const profileEntries: { key: string; value: string | string[] }[] =
+    language === "en"
+      ? [
+          { key: "name", value: "Vu Bao Khanh" },
+          { key: "role", value: "PHP Developer @ BM WEB Co., Ltd" },
+          { key: "previous", value: "Frontend Developer Intern @ CUSC" },
+          { key: "location", value: p.location },
+          { key: "education", value: "FPT Polytechnic Can Tho — Web Development (GPA 3.75/4.0)" },
+          {
+            key: "specialties",
+            value: ["Real-time Systems", "Async Processing & Queues", "Auth & Payment Integration", "Production Troubleshooting"],
+          },
+          {
+            key: "projects",
+            value: ["StreamHub — Video Streaming Platform", "Krello — Real-Time Task Management"],
+          },
+        ]
+      : [
+          { key: "tên", value: "Vũ Bảo Khanh" },
+          { key: "vai_trò", value: "Lập trình viên PHP @ Công ty TNHH BM WEB" },
+          { key: "trước_đó", value: "Thực tập sinh Frontend @ CUSC" },
+          { key: "vị_trí", value: p.location },
+          { key: "học_vấn", value: "FPT Polytechnic Cần Thơ — Phát triển Web (GPA 3.75/4.0)" },
+          {
+            key: "chuyên_môn",
+            value: ["Hệ thống thời gian thực", "Xử lý bất đồng bộ & hàng đợi", "Xác thực & tích hợp thanh toán", "Xử lý sự cố production"],
+          },
+          {
+            key: "dự_án",
+            value: ["StreamHub — Nền tảng Streaming Video", "Krello — Quản lý công việc thời gian thực"],
+          },
+        ];
 
   return (
     <section
@@ -245,65 +308,32 @@ export default function About() {
                     >
                       <pre className="font-mono text-xs leading-relaxed text-white/80 overflow-x-auto select-text">
                         <code>
-                          {language === "en" ? (
-                            <>
-                              {"{\n"}
+                          {"{\n"}
+                          {profileEntries.map((entry, idx) => (
+                            <span key={entry.key}>
                               {"  "}
-                              <span className="text-[#9CDCFE]">&quot;name&quot;</span>: <span className="text-[#CE9178]">&quot;Vu Bao Khanh&quot;</span>,{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;role&quot;</span>: <span className="text-[#CE9178]">&quot;Fullstack Developer&quot;</span>,{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;location&quot;</span>: <span className="text-[#CE9178]">&quot;Vietnam&quot;</span>,{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;specialties&quot;</span>: [{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Backend Architecture&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;API Development&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Frontend UIs&quot;</span>{"\n"}
-                              {"  "}],{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;traits&quot;</span>: [{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Scalability-focused&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Clean-code enthusiast&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Continuous Learner&quot;</span>{"\n"}
-                              {"  "}]{"\n"}
-                              {"}"}
-                            </>
-                          ) : (
-                            <>
-                              {"{\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;tên&quot;</span>: <span className="text-[#CE9178]">&quot;Vũ Bảo Khanh&quot;</span>,{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;vai_trò&quot;</span>: <span className="text-[#CE9178]">&quot;Nhà phát triển Fullstack&quot;</span>,{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;vị_trí&quot;</span>: <span className="text-[#CE9178]">&quot;Việt Nam&quot;</span>,{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;chuyên_môn&quot;</span>: [{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Kiến trúc Hệ thống máy chủ&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Thiết kế & Tối ưu APIs&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Giao diện Frontend Tương tác&quot;</span>{"\n"}
-                              {"  "}],{"\n"}
-                              {"  "}
-                              <span className="text-[#9CDCFE]">&quot;phẩm_chất&quot;</span>: [{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Tập trung vào hiệu suất cao&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Đam mê chuẩn viết code sạch&quot;</span>,{"\n"}
-                              {"    "}
-                              <span className="text-[#CE9178]">&quot;Luôn tự học hỏi công nghệ mới&quot;</span>{"\n"}
-                              {"  "}]{"\n"}
-                              {"}"}
-                            </>
-                          )}
+                              <span className="text-[#9CDCFE]">&quot;{entry.key}&quot;</span>:{" "}
+                              {Array.isArray(entry.value) ? (
+                                <>
+                                  [{"\n"}
+                                  {entry.value.map((v, j) => (
+                                    <span key={v}>
+                                      {"    "}
+                                      <span className="text-[#CE9178]">&quot;{v}&quot;</span>
+                                      {j < entry.value.length - 1 ? "," : ""}
+                                      {"\n"}
+                                    </span>
+                                  ))}
+                                  {"  "}]
+                                </>
+                              ) : (
+                                <span className="text-[#CE9178]">&quot;{entry.value}&quot;</span>
+                              )}
+                              {idx < profileEntries.length - 1 ? "," : ""}
+                              {"\n"}
+                            </span>
+                          ))}
+                          {"}"}
                         </code>
                       </pre>
                     </motion.div>
@@ -336,7 +366,7 @@ export default function About() {
                             {language === "en" ? "Location:" : "Khu vực:"}
                           </span>
                           <span className="text-white/60">
-                            {language === "en" ? "Vietnam (UTC+7)" : "Việt Nam (UTC+7)"}
+                            {p.location} (UTC+7)
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -357,7 +387,7 @@ export default function About() {
                               {language === "en" ? "Learning Focus:" : "Đang học hỏi:"}
                             </span>
                             <span className="text-violet-400 font-semibold">
-                              {language === "en" ? "Node.js & Architecture" : "Hệ sinh thái Node.js & Thiết kế Hệ thống"}
+                              {language === "en" ? "System Design & CI/CD" : "Thiết kế Hệ thống & CI/CD"}
                             </span>
                           </div>
                           <div className="space-y-1 pl-6">
@@ -387,6 +417,30 @@ export default function About() {
                             className="text-cyan-400 hover:underline hover:text-cyan-300 transition-colors"
                           >
                             {p.email}
+                          </a>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-emerald-400 font-bold">[OK]</span>
+                          <span className="text-white/80 font-bold">
+                            {language === "en" ? "Phone:" : "Điện thoại:"}
+                          </span>
+                          <a
+                            href={`tel:${p.phone}`}
+                            className="text-cyan-400 hover:underline hover:text-cyan-300 transition-colors"
+                          >
+                            {p.phone}
+                          </a>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-emerald-400 font-bold">[OK]</span>
+                          <span className="text-white/80 font-bold">GitHub:</span>
+                          <a
+                            href={p.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-400 hover:underline hover:text-cyan-300 transition-colors"
+                          >
+                            github.com/vubaokhannh
                           </a>
                         </div>
                       </div>

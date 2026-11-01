@@ -36,6 +36,9 @@ import {
   SiNestjs,
   SiPostgresql,
   SiPrisma,
+  SiMantine,
+  SiSocketdotio,
+  SiCloudflare,
 } from "react-icons/si";
 import { VscVscode } from "react-icons/vsc";
 
@@ -44,6 +47,7 @@ const skillIconMap: Record<string, IconType> = {
   typescript: SiTypescript,
   tailwind: SiTailwindcss,
   nextjs: SiNextdotjs,
+  mantine: SiMantine,
   laravel: SiLaravel,
   php: SiPhp,
   nodejs: SiNodedotjs,
@@ -58,6 +62,8 @@ const skillIconMap: Record<string, IconType> = {
   figma: SiFigma,
   nestjs: SiNestjs,
   prisma: SiPrisma,
+  socketio: SiSocketdotio,
+  "cloudflare-r2": SiCloudflare,
 };
 
 function getFileExtension(skillId: string): string {
@@ -68,10 +74,18 @@ function getFileExtension(skillId: string): string {
       return "php";
     case "react":
     case "nextjs":
+    case "mantine":
+    case "dnd-kit":
       return "tsx";
     case "typescript":
     case "nestjs":
     case "prisma":
+    case "zustand":
+    case "tanstack-query":
+    case "socketio":
+    case "bullmq":
+    case "auth":
+    case "hlsjs":
       return "ts";
     case "nodejs":
       return "js";
@@ -81,8 +95,10 @@ function getFileExtension(skillId: string): string {
     case "redis":
       return "conf";
     case "docker":
+    case "cloudflare-r2":
       return "yml";
     case "git":
+    case "ffmpeg":
       return "sh";
     case "figma":
       return "fig";

@@ -212,6 +212,17 @@ export default function Experience() {
                           {item.description}
                         </div>
 
+                        {item.highlights && item.highlights.length > 0 && (
+                          <ul className="pl-3.5 mb-5 space-y-1.5 text-white/60 font-sans text-xs leading-relaxed list-none select-text">
+                            {item.highlights.map((h) => (
+                              <li key={h} className="flex gap-2">
+                                <span style={{ color: item.color }} aria-hidden="true">▹</span>
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+
                         {/* Diff Divider */}
                         <div className="text-white/20 border-t border-white/[0.04] pt-3.5 mt-2 text-[10px] tracking-wider uppercase font-bold select-none">
                           diff --git a/stack b/stack

@@ -52,6 +52,16 @@ export interface ExperienceItem {
   description: string;
   tags: string[];
   color: string;
+  /** Detailed bullet points (achievements / responsibilities) */
+  highlights?: string[];
+}
+
+export interface EducationItem {
+  id: string;
+  school: string;
+  major: string;
+  duration: string;
+  gpa?: string;
 }
 
 
@@ -75,6 +85,7 @@ export interface PersonalInfo {
   bio: string;
   location: string;
   email: string;
+  phone?: string;
   github: string;
   linkedin: string;
   facebook: string;

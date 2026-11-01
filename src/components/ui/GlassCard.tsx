@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion, HTMLMotionProps, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
 
 interface GlassCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   children: React.ReactNode;
@@ -37,21 +37,53 @@ export function GlassCard({
   padding = "md",
   ...props
 }: GlassCardProps) {
+  // 3D tilt + cursor-following glare (framer-motion springs)
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+  const sx = useSpring(px, { stiffness: 200, damping: 20 });
+  const sy = useSpring(py, { stiffness: 200, damping: 20 });
+  const rotateY = useTransform(sx, [0, 1], [-7, 7]);
+  const rotateX = useTransform(sy, [0, 1], [7, -7]);
+  const gx = useTransform(sx, (v) => `${v * 100}%`);
+  const gy = useTransform(sy, (v) => `${v * 100}%`);
+  const glare = useMotionTemplate`radial-gradient(260px circle at ${gx} ${gy}, rgba(255,255,255,0.10), transparent 70%)`;
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!hover) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width);
+    py.set((e.clientY - r.top) / r.height);
+  };
+  const onLeave = () => {
+    px.set(0.5);
+    py.set(0.5);
+  };
+
   return (
     <motion.div
       className={cn(
-        "relative rounded-2xl border border-white/[0.06] bg-[#0F1117]/80 backdrop-blur-xl",
-        "transition-all duration-300",
+        "group relative rounded-2xl border border-white/[0.06] bg-[#0F1117]/80 backdrop-blur-xl",
+        "transition-[border-color,box-shadow] duration-300",
         hover && "cursor-default",
         hover && glowMap[glowColor],
         gradient && "gradient-border",
         paddingMap[padding],
         className
       )}
+      style={hover ? { rotateX, rotateY, transformPerspective: 900 } : undefined}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
       whileHover={hover ? { y: -4, scale: 1.01 } : undefined}
       transition={{ duration: 0.3, ease: "easeOut" }}
       {...props}
     >
+      {hover && (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ background: glare }}
+        />
+      )}
       {children}
     </motion.div>
   );
