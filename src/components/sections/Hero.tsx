@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { ScrambleText } from "@/components/ui/ScrambleText";
 import { useMousePosition } from "@/hooks/useMousePosition";
@@ -10,6 +11,8 @@ import { personalEn, personalVi } from "@/data/personal";
 import { useLanguage } from "@/hooks/useLanguage";
 import { floatAnimation } from "@/animations/variants";
 import { ArrowRight, Download, Github, Sparkles } from "lucide-react";
+
+const Hero3D = dynamic(() => import("@/components/ui/Hero3D"), { ssr: false });
 
 // Hệ thống thẻ công nghệ mở rộng từ CV - sử dụng ký tự text hình học cao cấp để đổi màu neon động
 const TECH_CARDS = [
@@ -59,6 +62,7 @@ export default function Hero() {
       aria-label="Hero section"
     >
       <AuroraBackground intensity="medium" />
+      <Hero3D />
 
       {/* Floating tech cards — Bố trí tọa độ hình học so le bất đối xứng quanh tâm chữ */}
       <motion.div
